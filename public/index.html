@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info Dimass</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Kode CSS yang sama seperti sebelumnya untuk body, header, tombol, container, nama, dan tombol link sosial media */
+
+        /* Perbesar ukuran font untuk jam */
+        #current-time {
+            font-size: 48px;
+        }
+
+        /* Perpanjangan durasi animasi untuk tombol link di dalam card */
+        .link-container {
+            /* Kode CSS lainnya */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease; /* Memperpanjang durasi animasi */
+            /* Kode CSS lainnya */
+        }
+
+        /* Tambahkan kelas .show untuk menampilkan tombol link di dalam card */
+        .link-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+<style type="text/css">* {user-select: auto !important; -webkit-user-select: auto !important;}</style><input type="hidden" id="inject_idm_text_selection"><style></style></head>
+<body>
+
+    <!-- Bagian waktu terbaru di bagian atas -->
+    <header id="latest-time">
+        <p id="current-time">10:08:33 AM</p>
+    </header>
+
+    <!-- Tombol berbagi di pojok kanan atas -->
+    <div id="share-button" onclick="sharePage()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+    </div>
+
+    <!-- Tombol tema gelap/terang di pojok kanan atas -->
+    <div id="theme-toggle" onclick="toggleTheme()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </div>
+
+    <div id="container">
+        <!-- Nama -->
+        <div id="name-container">
+            <p id="name">DimasAjaa</p>
+        </div>
+
+        <!-- Profil menggunakan GIF -->
+        <div id="profile">
+            <img src="https://cdn.btch.bz/file/4da22e4a177181e920ba9.jpg" alt="Profil" width="100">
+        </div>
+
+        <!-- Link Grup WhatsApp -->
+        <a class="link-container show" href="https://whatsapp.com/channel/0029VaCvaNgBPzjcfrTixA1U" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle link-logo"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            WhatsApp Channel
+        </a>
+
+        <!-- Link YouTube -->
+        <a class="link-container show" href="https://www.youtube.com/channel/@felizmunzz" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-youtube link-logo"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+            YouTube
+        </a>
+
+        <!-- Link Chat OpenAI -->
+        <a class="link-container show" href="https://chat.botika.online/7IIQJKO" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square link-logo"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            Chat Ai
+        </a>
+
+        <!-- Link Replit -->
+        <a class="link-container show" href="https://replit.com/dimaszkuy" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-terminal link-logo"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+            Replit
+        </a>
+
+        <!-- Link GitHub -->
+        <a class="link-container show" href="https://github.com/dimaszkuy" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github link-logo"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            GitHub
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace(); // Mengaktifkan Feather Icons
+
+        // Fungsi untuk mendapatkan waktu saat ini
+        function getCurrentTime() {
+            const now = new Date();
+            const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+            return now.toLocaleTimeString('en-US', options);
+        }
+
+        // Fungsi untuk mengupdate waktu setiap detik
+        function updateTime() {
+            const currentTimeElement = document.getElementById('current-time');
+            setInterval(() => {
+                currentTimeElement.textContent = getCurrentTime();
+            }, 1000);
+        }
+
+        // Fungsi untuk menangani berbagi
+        function sharePage() {
+            const shareText = 'Temukan link menarik di halaman saya!';
+            const shareUrl = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    text: shareText,
+                    url: shareUrl,
+                })
+                .then(() => console.log('Berhasil membagikan'))
+                .catch((error) => console.error('Gagal membagikan', error));
+            } else {
+                alert(`Anda dapat berbagi dengan menyalin link:\n\n${shareText}\n${shareUrl}`);
+            }
+        }
+
+        // Fungsi untuk mengganti tema
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+
+            // Menyimpan preferensi tema pada local storage
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Mendeteksi tema yang disimpan di local storage
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme) {
+            document.documentElement.setAttribute('data-theme', storedTheme);
+        }
+
+        // Fungsi untuk menampilkan tombol link sosial media satu per satu dengan efek muncul perlahan
+        function showLinkContainers() {
+            const linkContainers = document.querySelectorAll('.link-container');
+            linkContainers.forEach((linkContainer, index) => {
+                setTimeout(() => {
+                    linkContainer.classList.add('show');
+                }, index * 500); // Memberikan jeda 500ms antara munculnya setiap tombol
+            });
+        }
+
+        // Panggil fungsi untuk menampilkan tombol link sosial media
+        showLinkContainers();
+
+        // Memanggil fungsi untuk mengupdate waktu setiap detik
+        updateTime();
+    </script>
+
+
+</body></html>
