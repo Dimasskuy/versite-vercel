@@ -1,128 +1,139 @@
-/* CSS untuk body */
+:root {
+    --primary-color: #007bff;
+    --bg-light: rgba(255, 255, 255, 0.9);
+    --bg-dark: rgba(0, 0, 0, 0.9);
+    --text-light: #333;
+    --text-dark: #fff;
+}
+
+/* Body */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
     background-image: url('https://telegra.ph/file/7bb7a4638de8687d3471e.jpg');
     background-size: cover;
+    background-attachment: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     flex-direction: column;
-    transition: background-color 0.3s ease;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
-/* CSS untuk header */
-#latest-time {
+/* Tombol berbagi dan tema */
+#share-button, #theme-toggle {
+    position: fixed;
+    top: 20px;
     background-color: transparent;
-    color: #000;
-    padding: 15px;
-    text-align: center;
-    margin-bottom: 20px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-color); /* Warna biru eksplisit */
+    transition: color 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* CSS untuk tombol berbagi */
 #share-button {
-    position: fixed;
-    top: 20px;
     right: 20px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-    transition: color 0.3s ease;
-    outline: 2px solid rgba(0, 0, 0, 0);
 }
 
-#share-button i {
-    color: inherit;
-}
-
-/* CSS untuk tombol tema gelap/terang */
 #theme-toggle {
-    position: fixed;
-    top: 20px;
     right: 80px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    color: #fff;
-    transition: color 0.3s ease;
-    outline: 2px solid rgba(0, 0, 0, 0);
 }
 
-#theme-toggle i {
+#share-button i, #theme-toggle i {
     color: inherit;
-    margin: 0 5px;
 }
 
-/* CSS untuk container */
-#container {
+#theme-toggle .feather-moon {
+    display: none;
+}
+
+[data-theme='dark'] #theme-toggle .feather-sun {
+    display: none;
+}
+
+[data-theme='dark'] #theme-toggle .feather-moon {
+    display: inline;
+}
+
+/* Container */
+main#container {
     width: 80%;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #333;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-    overflow-y: scroll;
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    border-radius: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    opacity: 0;
+    transform: translateY(30px);
 }
 
-/* CSS untuk tema gelap */
-[data-theme='dark'] #container {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
+main#container.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-/* CSS untuk nama */
-#name-container {
-    margin-bottom: 20px;
+/* Tema gelap */
+[data-theme='dark'] main#container {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+/* Nama dan profil */
+#name-container, #profile {
+    margin-bottom: 25px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#name-container.show, #profile.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #profile img {
     border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    border: 2px solid #ddd;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#profile img:hover {
+    transform: scale(1.05);
 }
 
 #name {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-light);
     transition: color 0.3s ease;
 }
 
-/* CSS untuk tema gelap */
 [data-theme='dark'] #name {
-    color: #ff0000;
+    color: var(--primary-color);
 }
 
-/* CSS untuk tombol link sosial media */
+/* Tombol link sosial media */
 .link-container {
-    margin: 10px;
-    text-align: center;
+    margin: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 10px;
+    padding: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: #000;
-    transition: color 0.3s ease, background-color 0.3s ease;
-    outline: 2px solid rgba(0, 0, 0, 0);
+    color: var(--text-light);
+    outline: 3px solid #ddd; /* Outline lebih tebal */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 1s ease, transform 1s ease;
-}
-
-.link-logo {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
 }
 
 .link-container.show {
@@ -132,85 +143,58 @@ body {
 
 .link-container:hover {
     background-color: #f0f0f0;
-    color: #007bff;
+    color: var(--primary-color);
+    transform: scale(1.02);
 }
 
-a {
-    text-decoration: none;
-    color: #000;
-    display: block;
-}
-
-a:hover {
-    color: #007bff;
-}
-
-/* CSS untuk tema gelap */
-[data-theme='dark'] #share-button,
-[data-theme='dark'] #theme-toggle,
 [data-theme='dark'] .link-container {
-    color: #ff0000;
+    color: var(--primary-color);
+    border-color: #444;
+    outline-color: #444;
 }
 
-/* CSS untuk tema terang */
-[data-theme='light'] #share-button,
-[data-theme='light'] #theme-toggle,
-[data-theme='light'] .link-container {
-    color: #000;
-}
-
-#theme-toggle:hover,
-#share-button:hover,
-.link-container:hover {
-    opacity: 0.8;
-    cursor: pointer;
-}
-
-/* CSS untuk tema gelap */
-[data-theme='dark'] #share-button:hover,
-[data-theme='dark'] #theme-toggle:hover,
 [data-theme='dark'] .link-container:hover {
-    color: #ff0000;
+    background-color: #333;
+    color: var(--primary-color);
 }
 
-/* CSS untuk tema terang */
-[data-theme='light'] #share-button:hover,
-[data-theme='light'] #theme-toggle:hover,
-[data-theme='light'] .link-container:hover {
-    color: #007bff;
+.link-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
 }
 
-.link-container {
-    outline: 2px solid rgba(0, 0, 0, 0);
+/* Tema untuk tombol berbagi dan tema */
+#share-button, #theme-toggle {
+    color: var(--primary-color); /* Pastikan biru di semua tema */
 }
 
-/* CSS untuk tema gelap */
-[data-theme='dark'] .link-container {
-    outline: 2px solid #000;
+#share-button:hover, #theme-toggle:hover {
+    transform: scale(1.1);
 }
 
-#latest-time,
-#name {
-    transition: color 0.3s ease;
-}
+/* Responsivitas */
+@media (max-width: 600px) {
+    main#container {
+        width: 90%;
+        padding: 20px;
+    }
 
-#theme-toggle:hover,
-#share-button:hover,
-.link-container:hover {
-    opacity: 0.8;
-    cursor: pointer;
-}
+    #name {
+        font-size: 24px;
+    }
 
-/* CSS untuk tema gelap */
-[data-theme='dark'] #share-button:hover,
-[data-theme='dark'] #theme-toggle:hover,
-[data-theme='dark'] .link-container:hover {
-    color: #ff0000;
-}
+    #profile img {
+        width: 100px;
+        height: 100px;
+    }
 
-/* CSS untuk tema terang */
-[data-theme='light'] #share-button:hover,
-[data-theme='light'] #theme-toggle:hover,
-[data-theme='light'] .link-container:hover {
-    color: #007bff;
+    .link-container {
+        padding: 10px;
+        outline: 2px solid #ddd; /* Outline sedikit lebih tipis di mobile */
+    }
+
+    [data-theme='dark'] .link-container {
+        outline-color: #444;
+    }
 }
