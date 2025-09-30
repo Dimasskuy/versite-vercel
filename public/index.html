@@ -1,172 +1,127 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Info Dimass</title>
+    <title>Dimass Always Good</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Kode CSS yang sama seperti sebelumnya untuk body, header, tombol, container, nama, dan tombol link sosial media */
-
-        /* Perbesar ukuran font untuk jam */
-        #current-time {
-            font-size: 48px;
-        }
-
-        /* Perpanjangan durasi animasi untuk tombol link di dalam card */
-        .link-container {
-            /* Kode CSS lainnya */
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease; /* Memperpanjang durasi animasi */
-            /* Kode CSS lainnya */
-        }
-
-        /* Tambahkan kelas .show untuk menampilkan tombol link di dalam card */
-        .link-container.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
 </head>
 <body>
-
-    <!-- Bagian waktu terbaru di bagian atas -->
-    <header id="latest-time">
-        <p id="current-time"></p>
-    </header>
-
-    <!-- Tombol berbagi di pojok kanan atas -->
-    <div id="share-button" onclick="sharePage()">
+    <button id="share-button" aria-label="Share page" onclick="sharePage()">
         <i data-feather="share-2"></i>
-    </div>
+    </button>
 
-    <!-- Tombol tema gelap/terang di pojok kanan atas -->
-    <div id="theme-toggle" onclick="toggleTheme()">
-        <i data-feather="sun"></i>
-        <i data-feather="moon"></i>
-    </div>
+    <button id="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
+        <i data-feather="sun" class="feather-sun"></i>
+        <i data-feather="moon" class="feather-moon"></i>
+    </button>
 
-    <div id="container">
-        <!-- Nama -->
+    <main id="container">
         <div id="name-container">
             <p id="name">DimasAjaa</p>
         </div>
 
-        <!-- Profil menggunakan GIF -->
         <div id="profile">
-            <img src="https://telegra.ph/file/cdc390b84dddc8693130b.jpg" alt="Profil" width="100">
+            <img src="https://telegra.ph/file/cdc390b84dddc8693130b.jpg" alt="Profil" width="120" height="120">
         </div>
 
-        <!-- Link Saluran WhatsApp -->
         <a class="link-container" href="https://whatsapp.com/channel/0029VaCvaNgBPzjcfrTixA1U" target="_blank">
             <i class="link-logo" data-feather="message-circle"></i>
             WhatsApp Channel
         </a>
         
-        <!-- Link Grup WhatsApp -->
         <a class="link-container" href="https://chat.whatsapp.com/DXPU5F2cePXEaysvcImdUy" target="_blank">
             <i class="link-logo" data-feather="message-circle"></i>
             Group Bot Whatsapp
         </a>
 
-        <!-- Link YouTube -->
-        <a class="link-container" href="https://www.youtube.com/channel/@felizmunzz" target="_blank">
+        <a class="link-container" href="https://youtube.com/@felizmunzz?si=mvpddUdPc9TudwfP" target="_blank">
             <i class="link-logo" data-feather="youtube"></i>
             YouTube
         </a>
 
-        <!-- Link Chat OpenAI -->
         <a class="link-container" href="https://chat.botika.online/7IIQJKO" target="_blank">
             <i class="link-logo" data-feather="message-square"></i>
             Chat Ai
         </a>
 
-        <!-- Link Replit -->
-        <a class="link-container" href="https://replit.com/dimaszkuy" target="_blank">
+        <a class="link-container" href="https://replit.com/@dimaszkuy" target="_blank">
             <i class="link-logo" data-feather="terminal"></i>
             Replit
         </a>
 
-        <!-- Link GitHub -->
-        <a class="link-container" href="https://github.com/dimaszkuy" target="_blank">
+        <a class="link-container" href="https://github.com/dimasskuy" target="_blank">
             <i class="link-logo" data-feather="github"></i>
             GitHub
         </a>
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script>
-        feather.replace(); // Mengaktifkan Feather Icons
+        feather.replace();
 
-        // Fungsi untuk mendapatkan waktu saat ini
-        function getCurrentTime() {
-            const now = new Date();
-            const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
-            return now.toLocaleTimeString('en-US', options);
-        }
-
-        // Fungsi untuk mengupdate waktu setiap detik
-        function updateTime() {
-            const currentTimeElement = document.getElementById('current-time');
-            setInterval(() => {
-                currentTimeElement.textContent = getCurrentTime();
-            }, 1000);
-        }
-
-        // Fungsi untuk menangani berbagi
         function sharePage() {
-            const shareText = 'Temukan link menarik di halaman saya!';
-            const shareUrl = window.location.href;
+            const shareData = {
+                title: document.title,
+                text: 'Kunjungi Info Dimass untuk link menarik!',
+                url: window.location.href,
+            };
 
             if (navigator.share) {
-                navigator.share({
-                    title: document.title,
-                    text: shareText,
-                    url: shareUrl,
-                })
-                .then(() => console.log('Berhasil membagikan'))
-                .catch((error) => console.error('Gagal membagikan', error));
+                navigator.share(shareData).catch((error) => {
+                    console.error('Gagal membagikan:', error);
+                    fallbackShare(shareData);
+                });
             } else {
-                alert(`Anda dapat berbagi dengan menyalin link:\n\n${shareText}\n${shareUrl}`);
+                fallbackShare(shareData);
             }
         }
 
-        // Fungsi untuk mengganti tema
+        function fallbackShare({ title, text, url }) {
+            const shareMessage = `${text}\n${url}`;
+            navigator.clipboard.writeText(shareMessage)
+                .then(() => alert('Link telah disalin ke clipboard:\n\n' + shareMessage))
+                .catch(() => alert('Gagal menyalin link. Silakan salin secara manual:\n\n' + shareMessage));
+        }
+
         function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-            document.documentElement.setAttribute('data-theme', newTheme);
-
-            // Menyimpan preferensi tema pada local storage
+            const html = document.documentElement;
+            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
         }
 
-        // Mendeteksi tema yang disimpan di local storage
-        const storedTheme = localStorage.getItem('theme');
-        if (storedTheme) {
-            document.documentElement.setAttribute('data-theme', storedTheme);
-        }
+        const storedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', storedTheme);
 
-        // Fungsi untuk menampilkan tombol link sosial media satu per satu dengan efek muncul perlahan
-        function showLinkContainers() {
+        function showElements() {
+            const container = document.getElementById('container');
+            const nameContainer = document.getElementById('name-container');
+            const profile = document.getElementById('profile');
             const linkContainers = document.querySelectorAll('.link-container');
-            linkContainers.forEach((linkContainer, index) => {
+
+            // Animasi container
+            setTimeout(() => {
+                container.classList.add('show');
+            }, 200);
+
+            // Animasi nama dan profil
+            setTimeout(() => {
+                nameContainer.classList.add('show');
+                profile.classList.add('show');
+            }, 400);
+
+            // Animasi link sosial media
+            linkContainers.forEach((link, index) => {
                 setTimeout(() => {
-                    linkContainer.classList.add('show');
-                }, index * 500); // Memberikan jeda 500ms antara munculnya setiap tombol
+                    link.classList.add('show');
+                }, 600 + index * 300); /* Kembali ke jeda 300ms */
             });
         }
 
-        // Panggil fungsi untuk menampilkan tombol link sosial media
-        showLinkContainers();
-
-        // Memanggil fungsi untuk mengupdate waktu setiap detik
-        updateTime();
+        showElements();
     </script>
-
 </body>
 </html>
