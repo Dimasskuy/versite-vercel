@@ -59,9 +59,9 @@ body {
 
 /* Container */
 main#container {
-    width: 80%;
-    max-width: 600px;
-    padding: 30px;
+    width: 70%;
+    max-width: 450px; /* Dikurangi dari 600px menjadi 450px */
+    padding: 25px; /* Dikurangi dari 30px menjadi 25px */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     text-align: center;
     background-color: var(--bg-light);
@@ -85,7 +85,7 @@ main#container.show {
 
 /* Nama dan profil */
 #name-container, #profile {
-    margin-bottom: 25px;
+    margin-bottom: 20px; /* Dikurangi dari 25px menjadi 20px */
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -98,8 +98,8 @@ main#container.show {
 
 #profile img {
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
+    width: 100px; /* Dikurangi dari 120px menjadi 100px */
+    height: 100px; /* Dikurangi dari 120px menjadi 100px */
     border: 2px solid #ddd;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -109,7 +109,7 @@ main#container.show {
 }
 
 #name {
-    font-size: 28px;
+    font-size: 24px; /* Dikurangi dari 28px menjadi 24px */
     font-weight: 700;
     color: var(--text-light);
     transition: color 0.3s ease;
@@ -121,16 +121,16 @@ main#container.show {
 
 /* Tombol link sosial media */
 .link-container {
-    margin: 12px;
+    margin: 10px; /* Dikurangi dari 12px menjadi 10px */
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 12px;
+    padding: 10px; /* Dikurangi dari 12px menjadi 10px */
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
     color: var(--text-light);
-    outline: 3px solid #ddd; /* Outline lebih tebal */
+    outline: 2px solid #ddd; /* Outline lebih tipis */
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
     opacity: 0;
     transform: translateY(20px);
@@ -159,8 +159,8 @@ main#container.show {
 }
 
 .link-logo {
-    width: 30px;
-    height: 30px;
+    width: 24px; /* Dikurangi dari 30px menjadi 24px */
+    height: 24px; /* Dikurangi dari 30px menjadi 24px */
     margin-right: 10px;
 }
 
@@ -173,28 +173,63 @@ main#container.show {
     transform: scale(1.1);
 }
 
-/* Responsivitas */
+/* Responsivitas untuk tablet */
+@media (max-width: 768px) {
+    main#container {
+        width: 80%;
+        max-width: 500px;
+        padding: 28px;
+    }
+
+    #name {
+        font-size: 26px;
+    }
+
+    #profile img {
+        width: 110px;
+        height: 110px;
+    }
+
+    .link-container {
+        padding: 11px;
+        margin: 11px;
+    }
+
+    .link-logo {
+        width: 27px;
+        height: 27px;
+    }
+}
+
+/* Responsivitas untuk mobile */
 @media (max-width: 600px) {
     main#container {
         width: 90%;
         padding: 20px;
+        max-width: none;
     }
 
     #name {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     #profile img {
-        width: 100px;
-        height: 100px;
+        width: 90px;
+        height: 90px;
     }
 
     .link-container {
-        padding: 10px;
-        outline: 2px solid #ddd; /* Outline sedikit lebih tipis di mobile */
+        padding: 9px;
+        margin: 9px;
+        outline: 2px solid #ddd;
+    }
+
+    .link-logo {
+        width: 22px;
+        height: 22px;
     }
 
     [data-theme='dark'] .link-container {
         outline-color: #444;
     }
-}
+                                }
