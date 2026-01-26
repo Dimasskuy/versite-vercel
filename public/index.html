@@ -3,111 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DimasAjaa - Profil lengkap dengan link ke semua platform sosial media dan konten menarik. Kunjungi untuk terhubung dan follow channel terbaru.">
-    <meta name="theme-color" content="#007bff">
-    <meta name="keywords" content="Dimass, DimasAjaa, Bot Whatsapp, YouTube, GitHub, Replit">
-    
-    <!-- Open Graph Meta Tags untuk Social Media Sharing -->
-    <meta property="og:title" content="Dimass Always Good - Profile & Links">
-    <meta property="og:description" content="Kunjungi semua platform sosial media dan konten menarik dari Dimass. Links lengkap untuk WhatsApp Channel, YouTube, GitHub, dan lainnya.">
-    <meta property="og:image" content="https://telegra.ph/file/cdc390b84dddc8693130b.jpg">
-    <meta property="og:url" content="https://versite-vercel.vercel.app">
-    <meta property="og:type" content="website">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Dimass Always Good">
-    <meta name="twitter:description" content="Profil lengkap dengan link ke semua platform sosial media">
-    <meta name="twitter:image" content="https://telegra.ph/file/cdc390b84dddc8693130b.jpg">
-    
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Dimass",
-        "description": "Content Creator & Developer",
-        "image": "https://telegra.ph/file/cdc390b84dddc8693130b.jpg",
-        "sameAs": [
-            "https://github.com/dimasskuy",
-            "https://youtube.com/@felizmunzz",
-            "https://replit.com/@dimaszkuy"
-        ]
-    }
-    </script>
-
-    <title>Dimass Always Good - Profile & Links</title>
+    <title>Dimass Always Good</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%23007bff'>D</text></svg>">
 </head>
 <body>
-    <button id="share-button" aria-label="Share this page" title="Share" onclick="sharePage()">
+    <button id="share-button" aria-label="Share page" onclick="sharePage()">
         <i data-feather="share-2"></i>
     </button>
 
-    <button id="theme-toggle" aria-label="Toggle dark and light theme" title="Toggle Theme" onclick="toggleTheme()">
+    <button id="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
         <i data-feather="sun" class="feather-sun"></i>
         <i data-feather="moon" class="feather-moon"></i>
     </button>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast"></div>
-
     <main id="container">
         <div id="name-container">
             <p id="name">DimasAjaa</p>
-            <p id="subtitle">Content Creator & Developer</p>
         </div>
 
         <div id="profile">
-            <img src="https://telegra.ph/file/cdc390b84dddc8693130b.jpg" alt="Profile Picture of Dimass" width="120" height="120" loading="lazy">
+            <img src="https://telegra.ph/file/cdc390b84dddc8693130b.jpg" alt="Profil" width="120" height="120">
         </div>
 
-        <div id="links-section">
-            <a class="link-container" href="https://whatsapp.com/channel/0029VaCvaNgBPzjcfrTixA1U" target="_blank" rel="noopener noreferrer" aria-label="Visit WhatsApp Channel">
-                <i class="link-logo" data-feather="message-circle"></i>
-                <span>WhatsApp Channel</span>
-            </a>
-            
-            <a class="link-container" href="https://chat.whatsapp.com/DXPU5F2cePXEaysvcImdUy" target="_blank" rel="noopener noreferrer" aria-label="Join WhatsApp Group">
-                <i class="link-logo" data-feather="message-circle"></i>
-                <span>Group Bot Whatsapp</span>
-            </a>
+        <a class="link-container" href="https://whatsapp.com/channel/0029VaCvaNgBPzjcfrTixA1U" target="_blank">
+            <i class="link-logo" data-feather="message-circle"></i>
+            WhatsApp Channel
+        </a>
+        
+        <a class="link-container" href="https://chat.whatsapp.com/DXPU5F2cePXEaysvcImdUy" target="_blank">
+            <i class="link-logo" data-feather="message-circle"></i>
+            Group Bot Whatsapp
+        </a>
 
-            <a class="link-container" href="https://youtube.com/@felizmunzz?si=mvpddUdPc9TudwfP" target="_blank" rel="noopener noreferrer" aria-label="Subscribe on YouTube">
-                <i class="link-logo" data-feather="youtube"></i>
-                <span>YouTube</span>
-            </a>
+        <a class="link-container" href="https://youtube.com/@felizmunzz?si=mvpddUdPc9TudwfP" target="_blank">
+            <i class="link-logo" data-feather="youtube"></i>
+            YouTube
+        </a>
 
-            <a class="link-container" href="https://chat.botika.online/7IIQJKO" target="_blank" rel="noopener noreferrer" aria-label="Chat with AI">
-                <i class="link-logo" data-feather="message-square"></i>
-                <span>Chat Ai</span>
-            </a>
+        <a class="link-container" href="https://chat.botika.online/7IIQJKO" target="_blank">
+            <i class="link-logo" data-feather="message-square"></i>
+            Chat Ai
+        </a>
 
-            <a class="link-container" href="https://replit.com/@dimaszkuy" target="_blank" rel="noopener noreferrer" aria-label="Visit Replit Profile">
-                <i class="link-logo" data-feather="terminal"></i>
-                <span>Replit</span>
-            </a>
+        <a class="link-container" href="https://replit.com/@dimaszkuy" target="_blank">
+            <i class="link-logo" data-feather="terminal"></i>
+            Replit
+        </a>
 
-            <a class="link-container" href="https://github.com/dimasskuy" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub Profile">
-                <i class="link-logo" data-feather="github"></i>
-                <span>GitHub</span>
-            </a>
-
-            <a class="link-container" id="vcard-download" href="#" onclick="downloadVCard(event)" aria-label="Download Contact Card">
-                <i class="link-logo" data-feather="download"></i>
-                <span>Download vCard</span>
-            </a>
-        </div>
-
-        <div id="footer">
-            <p id="visitor-count">Visitors: <span>0</span></p>
-        </div>
+        <a class="link-container" href="https://github.com/dimasskuy" target="_blank">
+            <i class="link-logo" data-feather="github"></i>
+            GitHub
+        </a>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script src="app.js"></script>
+    <script>
+        feather.replace();
+
+        function sharePage() {
+            const shareData = {
+                title: document.title,
+                text: 'Kunjungi Info Dimass untuk link menarik!',
+                url: window.location.href,
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData).catch((error) => {
+                    console.error('Gagal membagikan:', error);
+                    fallbackShare(shareData);
+                });
+            } else {
+                fallbackShare(shareData);
+            }
+        }
+
+        function fallbackShare({ title, text, url }) {
+            const shareMessage = `${text}\n${url}`;
+            navigator.clipboard.writeText(shareMessage)
+                .then(() => alert('Link telah disalin ke clipboard:\n\n' + shareMessage))
+                .catch(() => alert('Gagal menyalin link. Silakan salin secara manual:\n\n' + shareMessage));
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        const storedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', storedTheme);
+
+        function showElements() {
+            const container = document.getElementById('container');
+            const nameContainer = document.getElementById('name-container');
+            const profile = document.getElementById('profile');
+            const linkContainers = document.querySelectorAll('.link-container');
+
+            // Animasi container
+            setTimeout(() => {
+                container.classList.add('show');
+            }, 200);
+
+            // Animasi nama dan profil
+            setTimeout(() => {
+                nameContainer.classList.add('show');
+                profile.classList.add('show');
+            }, 400);
+
+            // Animasi link sosial media
+            linkContainers.forEach((link, index) => {
+                setTimeout(() => {
+                    link.classList.add('show');
+                }, 600 + index * 300); /* Kembali ke jeda 300ms */
+            });
+        }
+
+        showElements();
+    </script>
 </body>
 </html>
