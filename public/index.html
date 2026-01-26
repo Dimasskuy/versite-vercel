@@ -3,125 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dimass Always Good</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css">
+    <meta name="description" content="DimasAjaa's Personal Links - Connect with me on WhatsApp, YouTube, and more.">
+    <title>DimasAjaa | Links</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button id="share-button" aria-label="Share page" onclick="sharePage()">
-        <i data-feather="share-2"></i>
-    </button>
-
-    <button id="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
-        <i data-feather="sun" class="feather-sun"></i>
-        <i data-feather="moon" class="feather-moon"></i>
-    </button>
-
+    <div id="particles-js"></div>
+    <div class="top-controls">
+        <button id="theme-toggle" onclick="toggleTheme()"><i class="fas fa-sun"></i><i class="fas fa-moon"></i></button>
+        <button id="share-button" onclick="sharePage()"><i class="fas fa-share-nodes"></i></button>
+    </div>
     <main id="container">
-        <div id="name-container">
-            <p id="name">DimasAjaa</p>
-        </div>
+        <header>
+            <div id="profile"><img src="https://telegra.ph/file/cdc390b84dddc8693130b.jpg" alt="Profile"></div>
+            <div id="name-container">
+                <h1 id="name">DimasAjaa</h1>
+                <p id="bio">Always Good & Keep Learning</p>
+            </div>
+        </header>
+        <section class="links-section">
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/pasha_14.07" target="_blank" class="link-container" style="animation-delay: 0.4s">
+                <i class="fa-brands fa-instagram"></i>
+                <span>Instagram</span>
+            </a>
 
-        <div id="profile">
-            <img src="https://telegra.ph/file/cdc390b84dddc8693130b.jpg" alt="Profil" width="120" height="120">
-        </div>
+            <!-- WhatsApp -->
+            <a href="https://wa.me/6282211516246" target="_blank" class="link-container" style="animation-delay: 0.5s">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </a>
 
-        <a class="link-container" href="https://whatsapp.com/channel/0029VaCvaNgBPzjcfrTixA1U" target="_blank">
-            <i class="link-logo" data-feather="message-circle"></i>
-            WhatsApp Channel
-        </a>
-        
-        <a class="link-container" href="https://chat.whatsapp.com/DXPU5F2cePXEaysvcImdUy" target="_blank">
-            <i class="link-logo" data-feather="message-circle"></i>
-            Group Bot Whatsapp
-        </a>
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@itsmeziro_" target="_blank" class="link-container" style="animation-delay: 0.6s">
+                <i class="fa-brands fa-tiktok"></i>
+                <span>TikTok</span>
+            </a>
 
-        <a class="link-container" href="https://youtube.com/@felizmunzz?si=mvpddUdPc9TudwfP" target="_blank">
-            <i class="link-logo" data-feather="youtube"></i>
-            YouTube
-        </a>
+            <!-- YouTube -->
+            <a href="https://www.youtube.com/@ItsMeZiro." target="_blank" class="link-container" style="animation-delay: 0.7s">
+                <i class="fa-brands fa-youtube"></i>
+                <span>YouTube</span>
+            </a>
 
-        <a class="link-container" href="https://chat.botika.online/7IIQJKO" target="_blank">
-            <i class="link-logo" data-feather="message-square"></i>
-            Chat Ai
-        </a>
+            <!-- Chat AI -->
+            <a href="https://itsmeziro-chatai.vercel.app/" target="_blank" class="link-container" style="animation-delay: 0.8s">
+                <i class="fa-solid fa-robot"></i>
+                <span>Chat AI</span>
+            </a>
 
-        <a class="link-container" href="https://replit.com/@dimaszkuy" target="_blank">
-            <i class="link-logo" data-feather="terminal"></i>
-            Replit
-        </a>
-
-        <a class="link-container" href="https://github.com/dimasskuy" target="_blank">
-            <i class="link-logo" data-feather="github"></i>
-            GitHub
-        </a>
+            <!-- Replit -->
+            <a href="https://replit.com/@ItsMeZiro" target="_blank" class="link-container" style="animation-delay: 0.9s">
+                <i class="fa-solid fa-code"></i>
+                <span>Replit</span>
+            </a>
+        </section>
+        <footer class="visitor-counter" id="visitor-counter">
+            <span class="counter-label">Total Visitors</span>
+            <span class="counter-value" id="counter-value">0</span>
+        </footer>
     </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script>
-        feather.replace();
-
-        function sharePage() {
-            const shareData = {
-                title: document.title,
-                text: 'Kunjungi Info Dimass untuk link menarik!',
-                url: window.location.href,
-            };
-
-            if (navigator.share) {
-                navigator.share(shareData).catch((error) => {
-                    console.error('Gagal membagikan:', error);
-                    fallbackShare(shareData);
-                });
-            } else {
-                fallbackShare(shareData);
-            }
-        }
-
-        function fallbackShare({ title, text, url }) {
-            const shareMessage = `${text}\n${url}`;
-            navigator.clipboard.writeText(shareMessage)
-                .then(() => alert('Link telah disalin ke clipboard:\n\n' + shareMessage))
-                .catch(() => alert('Gagal menyalin link. Silakan salin secara manual:\n\n' + shareMessage));
-        }
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        }
-
-        const storedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', storedTheme);
-
-        function showElements() {
-            const container = document.getElementById('container');
-            const nameContainer = document.getElementById('name-container');
-            const profile = document.getElementById('profile');
-            const linkContainers = document.querySelectorAll('.link-container');
-
-            // Animasi container
-            setTimeout(() => {
-                container.classList.add('show');
-            }, 200);
-
-            // Animasi nama dan profil
-            setTimeout(() => {
-                nameContainer.classList.add('show');
-                profile.classList.add('show');
-            }, 400);
-
-            // Animasi link sosial media
-            linkContainers.forEach((link, index) => {
-                setTimeout(() => {
-                    link.classList.add('show');
-                }, 600 + index * 300); /* Kembali ke jeda 300ms */
-            });
-        }
-
-        showElements();
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
