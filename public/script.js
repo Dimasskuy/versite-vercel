@@ -1,23 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    initParticles();
     const storedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', storedTheme);
     updateVisitorCounter();
     showElements();
 });
-
-function initParticles() {
-    if (typeof particlesJS !== 'undefined') {
-        particlesJS('particles-js', {
-            "particles": {
-                "number": { "value": 80 },
-                "color": { "value": "#007bff" },
-                "line_linked": { "enable": true, "color": "#007bff" },
-                "move": { "enable": true, "speed": 2 }
-            }
-        });
-    }
-}
 
 function toggleTheme() {
     const html = document.documentElement;
