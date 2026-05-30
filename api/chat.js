@@ -1,5 +1,3 @@
-const https = require('https');
-
 module.exports = async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
 
@@ -14,41 +12,34 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ error: 'Missing message or senderId' });
         }
 
-        const payload = JSON.stringify({
-            app: {
-                id: "b3ekyuzy5sr1780108614855",
-                time: Date.now(),
-                data: {
-                    sender: {
-                        id: senderId
-                    },
-                    message: [
-                        {
-                            id: Math.random().toString(36).substring(2, 14) + Date.now().toString(36),
-                            time: Date.now(),
-                            type: "text",
-                            value: message
-                        }
-                    ]
-                }
-            }
-        });
-
-        const botikaResponse = await fetch('https://webhook.botika.online/webhook/', {
+        const response = await fetch('https://opengateway.gitlawb.com/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer yvcmq8-6tqb-vrr5mwt1w383jq2u-5p2wzdsdpx-vxk25h2r'
+                'Authorization': 'Bearer ogw_live_337592af39a1c7ee974856efbf0c32e2'
             },
-            body: payload
+            body: JSON.stringify({
+                model: 'mimo-v2.5-pro',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'Kamu adalah asisten AI yang ramah dan membantu. Jawab dalam Bahasa Indonesia. Singkat dan jelas. Maksimal 3 paragraf.'
+                    },
+                    {
+                        role: 'user',
+                        content: message
+                    }
+                ],
+                max_tokens: 500
+            })
         });
 
-        if (!botikaResponse.ok) {
-            throw new Error(`Botika API error: ${botikaResponse.status}`);
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
         }
 
-        const data = await botikaResponse.json();
-        const reply = data?.app?.data?.message?.[0]?.value || 'Maaf, saya tidak bisa memproses pesan itu.';
+        const data = await response.json();
+        const reply = data?.choices?.[0]?.message?.content || 'Maaf, saya tidak bisa memproses pesan itu.';
 
         return res.status(200).json({ reply });
 

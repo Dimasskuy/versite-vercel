@@ -127,7 +127,7 @@
 
             const bubble = document.createElement('div');
             bubble.classList.add('message-bubble');
-            bubble.innerHTML = text.replace(/\n/g, '<br>');
+            bubble.textContent = text;
 
             const timeSpan = document.createElement('span');
             timeSpan.classList.add('message-time');
