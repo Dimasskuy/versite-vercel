@@ -1,5 +1,3 @@
-const https = require('https');
-
 module.exports = async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
 
@@ -14,55 +12,39 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ error: 'Missing message or senderId' });
         }
 
-        const payload = JSON.stringify({
-            model: 'mimo-v2.5-pro',
-            messages: [
-                {
-                    role: 'system',
-                    content: 'Kamu asisten AI ramah bernama MiMo. Jawab singkat dalam Bahasa Indonesia.'
-                },
-                {
-                    role: 'user',
-                    content: message
-                }
-            ],
-            max_tokens: 200
-        });
-
-        const reply = await new Promise((resolve, reject) => {
-            const req = https.request({
-                hostname: 'opengateway.gitlawb.com',
-                port: 443,
-                path: '/v1/chat/completions',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ogw_live_337592af39a1c7ee974856efbf0c32e2'
-                },
-                timeout: 25000
-            }, (res) => {
-                let data = '';
-                res.on('data', chunk => data += chunk);
-                res.on('end', () => {
-                    try {
-                        const json = JSON.parse(data);
-                        resolve(json?.choices?.[0]?.message?.content || 'Maaf, saya tidak bisa memproses pesan itu.');
-                    } catch (e) {
-                        resolve('Maaf, terjadi kesalahan memproses response.');
+        const response = await fetch('https://opencode.ai/zen/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer sk-9dllnoOMQMhMnxz0VjsAyjcJxyE2ujHpFI2Ho0h0qvNtia6SHe5re7d9laIipk1q'
+            },
+            body: JSON.stringify({
+                model: 'mimo-v2.5-free',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'Kamu asisten AI ramah bernama MiMo. Jawab singkat dalam Bahasa Indonesia. Maksimal 2 paragraf.'
+                    },
+                    {
+                        role: 'user',
+                        content: message
                     }
-                });
-            });
-
-            req.on('error', reject);
-            req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
-            req.write(payload);
-            req.end();
+                ],
+                max_tokens: 200
+            })
         });
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const reply = data?.choices?.[0]?.message?.content || 'Maaf, saya tidak bisa memproses pesan itu.';
 
         return res.status(200).json({ reply });
 
     } catch (error) {
-        console.error('Chat API error:', error.message);
-        return res.status(500).json({ error: 'Terjadi kesalahan, coba lagi nanti.' });
+        console.error('Chat API error:', error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
