@@ -1,18 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DimasAjaa | Home</title>
+
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="DimasAjaa - WhatsApp Bot Developer & Content Creator. Temukan link penting dan sosial media saya di sini.">
+    <meta name="theme-color" content="#0f172a">
+    <meta property="og:title" content="DimasAjaa | Home">
+    <meta property="og:description" content="Kunjungi Info Dimass untuk link menarik!">
+    <meta property="og:image" content="https://i.ibb.co.com/7xfZyYpS/IMG-20260310-094735-1.jpg">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button id="share-button" aria-label="Share page" onclick="sharePage()">
+    <!-- Custom Cursor -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- Floating Particles -->
+    <div id="particles"></div>
+
+    <button id="share-button" aria-label="Bagikan halaman" onclick="sharePage()">
         <i data-feather="share-2"></i>
     </button>
 
-    <button id="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
+    <button id="theme-toggle" aria-label="Ganti tema" onclick="toggleTheme()">
         <i data-feather="sun" class="feather-sun"></i>
         <i data-feather="moon" class="feather-moon"></i>
     </button>
@@ -20,15 +37,16 @@
     <div id="content-wrapper">
         <div id="clock-container">
             <div id="time">00:00:00</div>
-            <div id="date">Monday, 1 January 2024</div>
+            <div id="date">Senin, 1 Januari 2024</div>
         </div>
 
         <main id="container">
             <div id="profile">
-                <img src="https://i.ibb.co.com/7xfZyYpS/IMG-20260310-094735-1.jpg" alt="Profil">
+                <img src="https://i.ibb.co.com/7xfZyYpS/IMG-20260310-094735-1.jpg" alt="Foto Profil DimasAjaa">
             </div>
 
             <h1 id="name">DimasAjaa</h1>
+            <p id="tagline"><span id="typing-text"></span><span id="typing-cursor">|</span></p>
 
             <a class="link-container" href="https://whatsapp.com/channel/0029VaCvaNgBPzjcfrTixA1U" target="_blank">
                 <i class="link-logo" data-feather="message-circle"></i>
@@ -37,12 +55,12 @@
 
             <a class="link-container" href="https://chat.whatsapp.com/DXPU5F2cePXEaysvcImdUy" target="_blank">
                 <i class="link-logo" data-feather="users"></i>
-                Group Bot Whatsapp
+                Grup Bot WhatsApp
             </a>
 
             <a class="link-container" href="https://chat.botika.online/7IIQJKO" target="_blank">
                 <i class="link-logo" data-feather="cpu"></i>
-                Chat Ai
+                Chat AI
             </a>
 
             <div id="social-grid">
@@ -60,6 +78,10 @@
                 </a>
             </div>
         </main>
+
+        <footer id="footer">
+            <p>&copy; 2026 DimasAjaa. Semua hak dilindungi.</p>
+        </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -67,7 +89,39 @@
         // Initialize Feather Icons
         feather.replace();
 
-        // Clock Function
+        // ===== Custom Cursor =====
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            cursorRing.style.left = e.clientX + 'px';
+            cursorRing.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursorRing.style.transform = 'translate(-50%, -50%) scale(0.8)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursorRing.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+
+        // ===== Floating Particles =====
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 6 + 's';
+            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
+            particlesContainer.appendChild(particle);
+        }
+
+        // ===== Clock Function =====
         function updateClock() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -77,14 +131,51 @@
             const timeEl = document.getElementById('time');
             if (timeEl) timeEl.textContent = `${hours}:${minutes}:${seconds}`;
 
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+            const dayName = hari[now.getDay()];
+            const monthName = bulan[now.getMonth()];
             const dateEl = document.getElementById('date');
-            if (dateEl) dateEl.textContent = now.toLocaleDateString('en-US', options);
+            if (dateEl) dateEl.textContent = `${dayName}, ${now.getDate()} ${monthName} ${now.getFullYear()}`;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Theme Toggle
+        // ===== Typing Effect =====
+        const taglines = ['WhatsApp Bot Developer', 'Content Creator', 'Tech Enthusiast'];
+        let taglineIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingText = document.getElementById('typing-text');
+
+        function typeEffect() {
+            const currentTagline = taglines[taglineIndex];
+
+            if (isDeleting) {
+                typingText.textContent = currentTagline.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingText.textContent = currentTagline.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentTagline.length) {
+                typeSpeed = 2000; // jeda sebelum hapus
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                taglineIndex = (taglineIndex + 1) % taglines.length;
+                typeSpeed = 500; // jeda sebelum ketik berikutnya
+            }
+
+            setTimeout(typeEffect, typeSpeed);
+        }
+        typeEffect();
+
+        // ===== Theme Toggle =====
         function toggleTheme() {
             const html = document.documentElement;
             const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -95,11 +186,11 @@
         const storedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', storedTheme);
 
-        // Share Function
+        // ===== Share Function =====
         function sharePage() {
             const shareData = {
                 title: document.title,
-                text: 'Kunjungi Info Dimass untuk link menarik!',
+                text: 'Kunjungi halaman DimasAjaa untuk link menarik!',
                 url: window.location.href,
             };
 
@@ -112,6 +203,19 @@
                     .catch(() => alert('Gagal menyalin link.'));
             }
         }
+
+        // ===== Ripple Effect on Links =====
+        document.querySelectorAll('.link-container').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                const rect = this.getBoundingClientRect();
+                ripple.style.left = (e.clientX - rect.left) + 'px';
+                ripple.style.top = (e.clientY - rect.top) + 'px';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
     </script>
 </body>
 </html>
