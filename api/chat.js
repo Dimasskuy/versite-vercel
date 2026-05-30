@@ -19,7 +19,7 @@ module.exports = async function handler(req, res) {
                 'Authorization': 'Bearer sk-WKrEx8SKt2D2CwYs6nN1dPqwLfgoUq4RHcpVe71KIsYsUoQIijazmorvl0i6QQHI'
             },
             body: JSON.stringify({
-                model: 'mimo-v2.5-free',
+                model: 'deepseek-v4-flash-free',
                 messages: [
                     {
                         role: 'system',
@@ -56,7 +56,8 @@ TUGAS KAMU:
         }
 
         const data = await response.json();
-        const reply = data?.choices?.[0]?.message?.content || 'Maaf, saya tidak bisa memproses pesan itu.';
+        const choice = data?.choices?.[0]?.message;
+        const reply = choice?.content || choice?.reasoning_content || 'Maaf, saya tidak bisa memproses pesan itu.';
 
         return res.status(200).json({ reply });
 
