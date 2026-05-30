@@ -47,7 +47,7 @@ TUGAS KAMU:
                         content: message
                     }
                 ],
-                max_tokens: 200
+                max_tokens: 500
             })
         });
 
