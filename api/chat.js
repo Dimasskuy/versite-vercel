@@ -12,33 +12,27 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ error: 'Missing message or senderId' });
         }
 
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 25000);
-
         const response = await fetch('https://opengateway.gitlawb.com/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ogw_live_337592af39a1c7ee974856efbf0c32e2'
             },
-            signal: controller.signal,
             body: JSON.stringify({
                 model: 'mimo-v2.5-pro',
                 messages: [
                     {
                         role: 'system',
-                        content: 'Kamu asisten AI ramah. Jawab singkat dalam Bahasa Indonesia.'
+                        content: 'Kamu adalah asisten AI yang ramah dan membantu bernama MiMo. Jawab dalam Bahasa Indonesia. Singkat dan jelas.'
                     },
                     {
                         role: 'user',
                         content: message
                     }
                 ],
-                max_tokens: 200
+                max_tokens: 500
             })
         });
-
-        clearTimeout(timeout);
 
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
