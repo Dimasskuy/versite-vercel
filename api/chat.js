@@ -16,14 +16,14 @@ module.exports = async function handler(req, res) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer sk-9dllnoOMQMhMnxz0VjsAyjcJxyE2ujHpFI2Ho0h0qvNtia6SHe5re7d9laIipk1q'
+                'Authorization': 'Bearer sk-WKrEx8SKt2D2CwYs6nN1dPqwLfgoUq4RHcpVe71KIsYsUoQIijazmorvl0i6QQHI'
             },
             body: JSON.stringify({
                 model: 'mimo-v2.5-free',
                 messages: [
                     {
                         role: 'system',
-                        content: 'Kamu asisten AI ramah bernama MiMo. Jawab singkat dalam Bahasa Indonesia. Maksimal 2 paragraf.'
+                        content: 'Kamu adalah asisten AI bernama DimBot yang dibuat oleh Dimas, seorang pengembang bot WhatsApp. Kamu ramah, sopan, dan menjawab dalam Bahasa Indonesia. Jawab singkat dan jelas, maksimal 2 paragraf. Jika ditanya siapa pembuatmu, jawab bahwa kamu dibuat oleh Dimas, seorang pengembang bot WhatsApp.'
                     },
                     {
                         role: 'user',
