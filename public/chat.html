@@ -5,27 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DimasAjaa | Chat AI</title>
 
-    <meta name="description" content="Chat AI DimasAjaa - Tanya apa saja ke chatbot AI powered by Botika.">
+    <meta name="description" content="Chat dengan Rimuruassistant - AI chatbot by DimasAjaa.">
     <meta name="theme-color" content="#0f172a">
-    <meta property="og:title" content="DimasAjaa | Chat AI">
-    <meta property="og:description" content="Chat dengan AI langsung dari website DimasAjaa.">
+    <meta property="og:title" content="DimasAjaa | Rimuruassistant">
+    <meta property="og:description" content="Chat dengan Rimuruassistant, asisten AI dari DimasAjaa.">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="/styles.css">
 </head>
-<body>
-    <!-- Custom Cursor -->
-    <div id="cursor-dot"></div>
-    <div id="cursor-ring"></div>
-
+<body class="chat-page">
     <!-- Floating Particles -->
     <div id="particles"></div>
-
-    <!-- Theme Toggle -->
-    <button id="theme-toggle" aria-label="Ganti tema" onclick="toggleTheme()">
-        <i data-feather="sun" class="feather-sun"></i>
-        <i data-feather="moon" class="feather-moon"></i>
-    </button>
 
     <!-- Chat Container -->
     <div id="chat-wrapper">
@@ -34,9 +24,13 @@
             <a href="/" id="back-button">
                 <i data-feather="arrow-left"></i>
             </a>
+            <div id="chat-avatar-wrap">
+                <img src="https://i.pinimg.com/736x/a6/bc/dd/a6bcddca2a67b35411717699861b6db1.jpg" alt="Rimuruassistant" id="chat-avatar">
+                <span id="online-dot"></span>
+            </div>
             <div id="chat-header-info">
-                <h1>Chat AI</h1>
-                <p>Powered by Botika</p>
+                <h1>Rimuruassistant</h1>
+                <p>AI Assistant <span class="header-separator">|</span> <span class="header-status">Online</span></p>
             </div>
         </div>
 
@@ -59,46 +53,26 @@
         // Initialize Feather Icons
         feather.replace();
 
-        // ===== Custom Cursor =====
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorRing = document.getElementById('cursor-ring');
-
-        document.addEventListener('mousemove', (e) => {
-            cursorDot.style.left = e.clientX + 'px';
-            cursorDot.style.top = e.clientY + 'px';
-            cursorRing.style.left = e.clientX + 'px';
-            cursorRing.style.top = e.clientY + 'px';
-        });
-
-        document.addEventListener('mousedown', () => {
-            cursorRing.style.transform = 'translate(-50%, -50%) scale(0.8)';
-        });
-
-        document.addEventListener('mouseup', () => {
-            cursorRing.style.transform = 'translate(-50%, -50%) scale(1)';
-        });
-
-        // ===== Floating Particles =====
+        // ===== Floating Particles (optimized) =====
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 6 + 's';
-            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
-            particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
-            particlesContainer.appendChild(particle);
+        const isMobile = window.matchMedia('(max-width: 480px)').matches;
+        const particleCount = isMobile ? 0 : 15;
+        if (particleCount > 0) {
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
+                fragment.appendChild(particle);
+            }
+            particlesContainer.appendChild(fragment);
         }
 
-        // ===== Theme Toggle =====
-        function toggleTheme() {
-            const html = document.documentElement;
-            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        }
-
+        // ===== Theme Sync =====
         const storedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', storedTheme);
 
@@ -107,6 +81,8 @@
         const chatForm = document.getElementById('chat-form');
         const chatInput = document.getElementById('chat-input');
         const sendButton = document.getElementById('send-button');
+        const CHAT_HISTORY_KEY = 'chat-history';
+        const MAX_HISTORY = 50;
 
         // Generate persistent sender ID
         let senderId = localStorage.getItem('chat-sender-id');
@@ -115,13 +91,28 @@
             localStorage.setItem('chat-sender-id', senderId);
         }
 
-        // Welcome message
-        function addWelcomeMessage() {
-            addMessage('bot', 'Halo! Saya Chat AI dari Botika. Ada yang bisa saya bantu?');
+        // Load chat history
+        function loadHistory() {
+            try {
+                return JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY)) || [];
+            } catch { return []; }
+        }
+
+        // Save chat history
+        function saveHistory() {
+            const messages = [];
+            chatMessages.querySelectorAll('.message').forEach(el => {
+                const role = el.classList.contains('message--user') ? 'user' : 'bot';
+                const text = el.querySelector('.message-bubble')?.textContent || '';
+                const time = el.querySelector('.message-time')?.textContent || '';
+                messages.push({ role, text, time });
+            });
+            const trimmed = messages.slice(-MAX_HISTORY);
+            localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(trimmed));
         }
 
         // Add message to chat
-        function addMessage(role, text) {
+        function addMessage(role, text, time) {
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message', `message--${role}`);
 
@@ -131,8 +122,12 @@
 
             const timeSpan = document.createElement('span');
             timeSpan.classList.add('message-time');
-            const now = new Date();
-            timeSpan.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            if (time) {
+                timeSpan.textContent = time;
+            } else {
+                const now = new Date();
+                timeSpan.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            }
 
             messageDiv.appendChild(bubble);
             messageDiv.appendChild(timeSpan);
@@ -192,22 +187,31 @@
                 const data = await response.json();
                 removeLoadingIndicator(loadingEl);
 
-                if (data.reply) {
+                if (response.status === 429) {
+                    addMessage('bot', data.error || 'Terlalu banyak pesan. Tunggu sebentar ya.');
+                } else if (data.reply) {
                     addMessage('bot', data.reply);
                 } else {
                     addMessage('bot', 'Maaf, terjadi kesalahan. Coba lagi nanti.');
                 }
+                saveHistory();
             } catch (err) {
                 removeLoadingIndicator(loadingEl);
                 addMessage('bot', 'Maaf, koneksi gagal. Periksa internet kamu.');
+                saveHistory();
             }
 
             sendButton.disabled = false;
             chatInput.focus();
         });
 
-        // Initialize
-        addWelcomeMessage();
+        // Initialize: load history or show welcome
+        const history = loadHistory();
+        if (history.length > 0) {
+            history.forEach(msg => addMessage(msg.role, msg.text, msg.time));
+        } else {
+            addMessage('bot', 'Halo! Saya Rimuruassistant, asisten AI dari Dimas. Ada yang bisa saya bantu?');
+        }
         chatInput.focus();
     </script>
 </body>

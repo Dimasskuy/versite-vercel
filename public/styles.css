@@ -6,7 +6,7 @@
     /* Glassmorphism Colors */
     --glass-bg: rgba(255, 255, 255, 0.08);
     --glass-border: rgba(255, 255, 255, 0.15);
-    --glass-blur: blur(20px);
+    --glass-blur: blur(12px);
 
     --text-color: #ffffff;
     --sub-text: rgba(255, 255, 255, 0.6);
@@ -49,6 +49,7 @@ body {
     animation: meshGradient 20s ease infinite;
     overflow-x: hidden;
     padding: 20px 0;
+    transition: color 0.4s ease, background-color 0.4s ease;
 }
 
 /* ===== Custom Cursor ===== */
@@ -96,6 +97,7 @@ body {
     opacity: 0.2;
     animation: floatParticle linear infinite;
     box-shadow: 0 0 6px var(--primary-color);
+    will-change: transform;
 }
 
 @keyframes floatParticle {
@@ -163,7 +165,7 @@ body {
     justify-content: center;
     cursor: none;
     color: var(--text-color);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 #share-button { right: 20px; }
@@ -229,6 +231,7 @@ main#container {
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     position: relative;
     overflow: hidden;
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 main#container::before {
@@ -307,7 +310,7 @@ main#container::before {
     color: var(--text-color);
     font-weight: 500;
     font-size: 0.95rem;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease, color 0.4s ease;
     position: relative;
     overflow: hidden;
     animation: fadeInUp 0.5s ease backwards;
@@ -407,7 +410,7 @@ main#container::before {
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     color: var(--text-color);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, color 0.4s ease;
     animation: fadeInUp 0.5s ease backwards;
 }
 
@@ -471,15 +474,24 @@ main#container::before {
 }
 
 /* ===== Chat Page ===== */
+body.chat-page {
+    display: block;
+    align-items: unset;
+    justify-content: unset;
+    min-height: unset;
+    padding: 0;
+    overflow: hidden;
+}
+
 #chat-wrapper {
     width: 100%;
-    max-width: 600px;
     height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
+    border: none;
     border-radius: 0;
     overflow: hidden;
     position: relative;
@@ -489,8 +501,11 @@ main#container::before {
 
 @media (min-width: 481px) {
     #chat-wrapper {
+        max-width: 600px;
         height: 90vh;
+        margin: auto;
         border-radius: 28px;
+        border: 1px solid var(--glass-border);
         box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 }
@@ -499,15 +514,18 @@ main#container::before {
 #chat-header {
     display: flex;
     align-items: center;
-    padding: 16px 20px;
-    background: rgba(255, 255, 255, 0.04);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(96, 165, 250, 0.06));
+    border-bottom: 1px solid rgba(59, 130, 246, 0.15);
     gap: 14px;
     flex-shrink: 0;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 [data-theme='light'] #chat-header {
-    background: rgba(0, 0, 0, 0.02);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(96, 165, 250, 0.04));
+    border-bottom-color: rgba(59, 130, 246, 0.12);
 }
 
 #back-button {
@@ -536,23 +554,74 @@ main#container::before {
     height: 18px;
 }
 
+#chat-avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+#chat-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid transparent;
+    background: linear-gradient(var(--glass-bg), var(--glass-bg)) padding-box,
+                linear-gradient(135deg, var(--primary-color), #a78bfa) border-box;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.25);
+}
+
+#chat-avatar:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 24px rgba(59, 130, 246, 0.4);
+}
+
+#online-dot {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 10px;
+    height: 10px;
+    background: #22c55e;
+    border: 2.5px solid rgba(10, 10, 26, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
+}
+
 #chat-header-info h1 {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color), #a78bfa);
+    background-size: 200% 200%;
+    animation: shimmer 3s linear infinite;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    letter-spacing: -0.3px;
 }
 
 #chat-header-info p {
     font-size: 0.72rem;
     color: var(--sub-text);
     opacity: 0.7;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.header-separator {
+    opacity: 0.3;
+}
+
+.header-status {
+    color: #22c55e;
+    font-weight: 500;
 }
 
 /* Chat Messages Area */
 #chat-messages {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     padding: 20px;
     display: flex;
@@ -737,13 +806,17 @@ main#container::before {
         border-radius: 0;
     }
     #chat-header {
-        padding: 14px 16px;
+        padding: 12px 14px;
+    }
+    #chat-avatar {
+        width: 42px;
+        height: 42px;
     }
     #chat-messages {
-        padding: 16px;
+        padding: 14px;
     }
     #chat-input-area {
-        padding: 14px 16px;
+        padding: 12px 14px;
     }
     .message {
         max-width: 88%;

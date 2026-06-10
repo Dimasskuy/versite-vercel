@@ -1,3 +1,18 @@
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW = 60 * 1000;
+const RATE_LIMIT_MAX = 10;
+
+function isRateLimited(senderId) {
+    const now = Date.now();
+    const entry = rateLimitMap.get(senderId);
+    if (!entry || now - entry.start > RATE_LIMIT_WINDOW) {
+        rateLimitMap.set(senderId, { start: now, count: 1 });
+        return false;
+    }
+    entry.count++;
+    return entry.count > RATE_LIMIT_MAX;
+}
+
 module.exports = async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
 
@@ -12,18 +27,27 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ error: 'Missing message or senderId' });
         }
 
+        if (isRateLimited(senderId)) {
+            return res.status(429).json({ error: 'Terlalu banyak pesan. Tunggu 1 menit lalu coba lagi.' });
+        }
+
+        const apiKey = process.env.OPENCODE_API_KEY;
+        if (!apiKey) {
+            return res.status(500).json({ error: 'API key not configured' });
+        }
+
         const response = await fetch('https://opencode.ai/zen/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer sk-WKrEx8SKt2D2CwYs6nN1dPqwLfgoUq4RHcpVe71KIsYsUoQIijazmorvl0i6QQHI'
+                'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
                 model: 'deepseek-v4-flash-free',
                 messages: [
                     {
                         role: 'system',
-                        content: `Kamu adalah asisten AI bernama DimBot yang dibuat oleh Dimas (DimasAjaa), seorang pengembang bot WhatsApp dan Content Creator. Kamu ramah, sopan, dan menjawab dalam Bahasa Indonesia. Jawab singkat dan jelas, maksimal 2 paragraf.
+                        content: `Kamu adalah asisten AI bernama Rimuruassistant yang dibuat oleh Dimas (DimasAjaa), seorang pengembang bot WhatsApp dan Content Creator. Kamu ramah, sopan, dan menjawab dalam Bahasa Indonesia. Jawab singkat dan jelas, maksimal 2 paragraf.
 
 INFORMASI TENTANG PEMBUAT DAN WEBSITE:
 - Nama: DimasAjaa

@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DimasAjaa | Home</title>
+    <title>DimasAjaa | Portfolio</title>
 
     <!-- SEO & Meta Tags -->
-    <meta name="description" content="DimasAjaa - WhatsApp Bot Developer & Content Creator. Temukan link penting dan sosial media saya di sini.">
+    <meta name="description" content="Portfolio DimasAjaa - WhatsApp Bot Developer & Content Creator. Lihat proyek, chat dengan AI, dan temukan semua sosial media saya.">
     <meta name="theme-color" content="#0f172a">
-    <meta property="og:title" content="DimasAjaa | Home">
-    <meta property="og:description" content="Kunjungi Info Dimass untuk link menarik!">
+    <meta property="og:title" content="DimasAjaa | Portfolio">
+    <meta property="og:description" content="Portfolio WhatsApp Bot Developer & Content Creator. Proyek, AI Chat, dan sosial media dalam satu tempat.">
     <meta property="og:image" content="https://i.ibb.co.com/7xfZyYpS/IMG-20260310-094735-1.jpg">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary">
@@ -47,7 +47,6 @@
 
             <h1 id="name">DimasAjaa</h1>
             <p id="tagline"><span id="typing-text"></span><span id="typing-cursor">|</span></p>
-            <p style="font-size: 0.75rem; color: var(--sub-text); margin-bottom: 20px; opacity: 0.6;">WhatsApp Bot Developer & Content Creator</p>
 
             <a class="link-container" href="https://whatsapp.com/channel/0029VaCvaNgBPzjcfrTixA1U" target="_blank">
                 <i class="link-logo" data-feather="message-circle"></i>
@@ -90,15 +89,24 @@
         // Initialize Feather Icons
         feather.replace();
 
-        // ===== Custom Cursor =====
+        // ===== Custom Cursor (throttled with rAF) =====
         const cursorDot = document.getElementById('cursor-dot');
         const cursorRing = document.getElementById('cursor-ring');
+        let mouseX = 0, mouseY = 0, rafPending = false;
 
         document.addEventListener('mousemove', (e) => {
-            cursorDot.style.left = e.clientX + 'px';
-            cursorDot.style.top = e.clientY + 'px';
-            cursorRing.style.left = e.clientX + 'px';
-            cursorRing.style.top = e.clientY + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            if (!rafPending) {
+                rafPending = true;
+                requestAnimationFrame(() => {
+                    cursorDot.style.left = mouseX + 'px';
+                    cursorDot.style.top = mouseY + 'px';
+                    cursorRing.style.left = mouseX + 'px';
+                    cursorRing.style.top = mouseY + 'px';
+                    rafPending = false;
+                });
+            }
         });
 
         document.addEventListener('mousedown', () => {
@@ -109,17 +117,23 @@
             cursorRing.style.transform = 'translate(-50%, -50%) scale(1)';
         });
 
-        // ===== Floating Particles =====
+        // ===== Floating Particles (optimized) =====
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 6 + 's';
-            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
-            particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
-            particlesContainer.appendChild(particle);
+        const isMobile = window.matchMedia('(max-width: 480px)').matches;
+        const particleCount = isMobile ? 0 : 15;
+        if (particleCount > 0) {
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
+                fragment.appendChild(particle);
+            }
+            particlesContainer.appendChild(fragment);
         }
 
         // ===== Clock Function =====
@@ -191,7 +205,7 @@
         function sharePage() {
             const shareData = {
                 title: document.title,
-                text: 'Kunjungi halaman DimasAjaa untuk link menarik!',
+                text: 'Kunjungi portfolio DimasAjaa - WhatsApp Bot Developer & Content Creator!',
                 url: window.location.href,
             };
 
