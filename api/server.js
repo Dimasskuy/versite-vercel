@@ -10,4 +10,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+// Serve chat.html for the /chat route
+app.get('/chat', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/chat.html'));
+});
+
 module.exports = app;

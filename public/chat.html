@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DimasAjaa | Chat AI</title>
+
+    <meta name="description" content="Chat dengan Rimuruassistant - AI chatbot by DimasAjaa.">
+    <meta name="theme-color" content="#050510" id="meta-theme-color">
+    <meta property="og:title" content="DimasAjaa | Rimuruassistant">
+    <meta property="og:description" content="Chat dengan Rimuruassistant, asisten AI dari DimasAjaa.">
+
+    <!-- Theme init before paint (no FOUC), prefers-color-scheme default -->
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('theme');
+                var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+                var meta = document.getElementById('meta-theme-color');
+                if (meta) meta.setAttribute('content', theme === 'dark' ? '#050510' : '#eef2fd');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/chat.css">
+</head>
+<body class="chat-page">
+    <!-- Inline SVG sprite (no CDN needed) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="i-arrow-left" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </symbol>
+            <symbol id="i-send" viewBox="0 0 24 24">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </symbol>
+            <symbol id="i-trash" viewBox="0 0 24 24">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </symbol>
+            <symbol id="i-alert" viewBox="0 0 24 24">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </symbol>
+            <symbol id="i-retry" viewBox="0 0 24 24">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Aurora background -->
+    <div class="aurora" aria-hidden="true">
+        <span class="orb orb-a"></span>
+        <span class="orb orb-b"></span>
+        <span class="orb orb-c"></span>
+    </div>
+
+    <!-- Floating particles -->
+    <div id="particles" aria-hidden="true"></div>
+
+    <!-- Toast -->
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Chat Container -->
+    <div id="chat-wrapper">
+        <!-- Chat Header -->
+        <div id="chat-header">
+            <a href="/" id="back-button" class="header-btn" aria-label="Kembali ke beranda">
+                <svg class="icon"><use href="#i-arrow-left"></use></svg>
+            </a>
+            <div id="chat-avatar-wrap">
+                <img src="rimuru-avatar.jpg" alt="Rimuruassistant" id="chat-avatar" data-fb="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233b82f6'/%3E%3Cstop offset='1' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='96' rx='48' fill='url(%23g)'/%3E%3Ctext x='48' y='63' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='%23ffffff'%3ER%3C/text%3E%3C/svg%3E" onerror="this.onerror=null;this.src=this.dataset.fb">
+            </div>
+            <div id="chat-header-info">
+                <h1>Rimuruassistant</h1>
+                <p>AI Assistant <span class="header-separator">·</span> by DimasAjaa</p>
+            </div>
+            <button id="clear-button" class="header-btn" aria-label="Hapus riwayat chat" title="Hapus riwayat chat">
+                <svg class="icon"><use href="#i-trash"></use></svg>
+            </button>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div id="chat-messages"></div>
+        <div id="chat-live" class="sr-only" aria-live="polite"></div>
+
+        <!-- Chat Input Area -->
+        <div id="chat-input-area">
+            <div id="chips" role="group" aria-label="Saran pertanyaan">
+                <button type="button" class="chip" data-text="Ceritakan tentang Dimas">Tentang Dimas</button>
+                <button type="button" class="chip" data-text="Bagaimana cara gabung grup WhatsApp?">Grup WhatsApp</button>
+                <button type="button" class="chip" data-text="Apa saja sosial media Dimas?">Sosial media</button>
+            </div>
+            <form id="chat-form">
+                <input type="text" id="chat-input" placeholder="Ketik pesan..." autocomplete="off" aria-label="Ketik pesan">
+                <button type="submit" id="send-button" aria-label="Kirim pesan">
+                    <svg class="icon"><use href="#i-send"></use></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        'use strict';
+
+        var REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var FINE_POINTER = window.matchMedia('(pointer: fine)').matches;
+
+        /* ===== Floating particles ===== */
+        (function initParticles() {
+            if (REDUCED_MOTION) return;
+            var isMobile = window.matchMedia('(max-width: 480px)').matches;
+            var count = isMobile ? 6 : 12;
+            var container = document.getElementById('particles');
+            var frag = document.createDocumentFragment();
+            for (var i = 0; i < count; i++) {
+                var p = document.createElement('span');
+                p.className = 'particle';
+                var size = (Math.random() * 3 + 2).toFixed(1);
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = (Math.random() * 100) + '%';
+                p.style.top = (20 + Math.random() * 80) + '%';
+                p.style.animationDuration = (Math.random() * 6 + 7).toFixed(1) + 's';
+                p.style.animationDelay = (-Math.random() * 8).toFixed(1) + 's';
+                frag.appendChild(p);
+            }
+            container.appendChild(frag);
+        })();
+
+        /* ===== Toast ===== */
+        var toastTimer = null;
+        function toast(msg) {
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2600);
+        }
+
+        /* ===== Chat logic ===== */
+        var chatMessages = document.getElementById('chat-messages');
+        var chatLive = document.getElementById('chat-live');
+        var chatForm = document.getElementById('chat-form');
+        var chatInput = document.getElementById('chat-input');
+        var sendButton = document.getElementById('send-button');
+        var clearButton = document.getElementById('clear-button');
+        var CHAT_HISTORY_KEY = 'chat-history';
+        var MAX_HISTORY = 50;
+        var WELCOME_TEXT = 'Halo! Saya Rimuruassistant, asisten AI dari Dimas. Ada yang bisa saya bantu?';
+        var lastUserText = '';
+
+        // Persistent sender ID
+        var senderId = null;
+        try {
+            senderId = localStorage.getItem('chat-sender-id');
+            if (!senderId) {
+                senderId = 'user-' + Date.now() + '-' + Math.random().toString(36).substring(2, 8);
+                localStorage.setItem('chat-sender-id', senderId);
+            }
+        } catch (e) {
+            senderId = 'user-' + Date.now();
+        }
+
+        /* ----- Safe markdown-lite: escape HTML, then bold/code/breaks ----- */
+        function escapeHTML(s) {
+            return s.replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+        }
+
+        function linkify(text) {
+            return text.replace(/https?:\/\/[^\s<>"']+/g, function (url) {
+                var clean = url;
+                var trail = '';
+                while (clean.length && /[.,;:!?)\]]/.test(clean.charAt(clean.length - 1))) {
+                    trail = clean.charAt(clean.length - 1) + trail;
+                    clean = clean.slice(0, -1);
+                }
+                if (!clean) return url;
+                return '<a href="' + clean + '" target="_blank" rel="noopener">' + clean + '</a>' + trail;
+            });
+        }
+
+        function renderMarkdown(src) {
+            var esc = escapeHTML(src);
+            var parts = esc.split(/(`[^`]+`)/g);
+            return parts.map(function (part, i) {
+                if (i % 2 === 1) {
+                    return '<code>' + part.slice(1, -1) + '</code>';
+                }
+                return linkify(part
+                    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\n/g, '<br>'));
+            }).join('');
+        }
+
+        function currentTime() {
+            var now = new Date();
+            return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Add a message. opts: { persist: true, isError: false, showRetry: false }
+        function addMessage(role, rawText, time, opts) {
+            opts = opts || {};
+            var persist = opts.persist !== false;
+
+            var messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'message--' + role);
+            if (opts.isError) messageDiv.classList.add('message--error');
+            messageDiv.dataset.persist = persist ? 'true' : 'false';
+
+            var bubble = document.createElement('div');
+            bubble.classList.add('message-bubble');
+
+            if (opts.isError) {
+                var row = document.createElement('div');
+                row.className = 'error-row';
+                row.innerHTML = '<svg class="icon"><use href="#i-alert"></use></svg><span></span>';
+                row.querySelector('span').textContent = rawText;
+                bubble.appendChild(row);
+                if (opts.showRetry) {
+                    var retryBtn = document.createElement('button');
+                    retryBtn.type = 'button';
+                    retryBtn.className = 'retry-btn';
+                    retryBtn.innerHTML = '<svg class="icon"><use href="#i-retry"></use></svg><span>Coba lagi</span>';
+                    retryBtn.addEventListener('click', function () {
+                        messageDiv.remove();
+                        if (lastUserText) sendChat(lastUserText, { echoUser: false });
+                    });
+                    bubble.appendChild(retryBtn);
+                }
+            } else if (role === 'bot') {
+                bubble.innerHTML = renderMarkdown(rawText);
+            } else {
+                bubble.textContent = rawText;
+            }
+            bubble.dataset.raw = rawText;
+
+            var timeSpan = document.createElement('span');
+            timeSpan.className = 'message-time';
+            timeSpan.textContent = time || currentTime();
+
+            messageDiv.appendChild(bubble);
+            messageDiv.appendChild(timeSpan);
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+            if (role === 'bot' && !opts.isError && !opts.silent && chatLive) {
+                chatLive.textContent = 'Rimuruassistant: ' + rawText;
+            }
+        }
+
+        function addLoadingIndicator() {
+            var messageDiv = document.createElement('div');
+            messageDiv.className = 'message message--bot message--typing';
+            messageDiv.dataset.persist = 'false';
+            messageDiv.id = 'typing-indicator';
+            var bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            var sr = document.createElement('span');
+            sr.className = 'sr-only';
+            sr.textContent = 'Rimuruassistant sedang mengetik…';
+            bubble.appendChild(sr);
+            for (var i = 0; i < 3; i++) {
+                var dot = document.createElement('span');
+                dot.className = 'typing-dot';
+                dot.setAttribute('aria-hidden', 'true');
+                bubble.appendChild(dot);
+            }
+            messageDiv.appendChild(bubble);
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+            return messageDiv;
+        }
+
+        function removeLoadingIndicator(el) {
+            if (el && el.parentNode) el.parentNode.removeChild(el);
+        }
+
+        /* ----- History (error messages are never persisted) ----- */
+        function loadHistory() {
+            try {
+                return JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY)) || [];
+            } catch (e) { return []; }
+        }
+
+        function saveHistory() {
+            try {
+                var messages = [];
+                chatMessages.querySelectorAll('.message').forEach(function (el) {
+                    if (el.dataset.persist === 'false') return;
+                    var role = el.classList.contains('message--user') ? 'user' : 'bot';
+                    var bubble = el.querySelector('.message-bubble');
+                    var time = el.querySelector('.message-time');
+                    messages.push({
+                        role: role,
+                        text: bubble ? (bubble.dataset.raw || '') : '',
+                        time: time ? time.textContent : ''
+                    });
+                });
+                localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(messages.slice(-MAX_HISTORY)));
+            } catch (e) { /* storage full/blocked: ignore */ }
+        }
+
+        var currentRequest = null;
+        var requestEpoch = 0;
+
+        function clearChat() {
+            requestEpoch++;
+            if (currentRequest) {
+                try { currentRequest.abort(); } catch (e) {}
+                currentRequest = null;
+            }
+            chatMessages.innerHTML = '';
+            try { localStorage.removeItem(CHAT_HISTORY_KEY); } catch (e) {}
+            lastUserText = '';
+            addMessage('bot', WELCOME_TEXT);
+            saveHistory();
+            toast('Riwayat chat dihapus.');
+        }
+
+        clearButton.addEventListener('click', clearChat);
+
+        /* ----- Send flow ----- */
+        function sendChat(text, opts) {
+            opts = opts || {};
+            var epoch = ++requestEpoch;
+            lastUserText = text;
+            if (opts.echoUser !== false) {
+                addMessage('user', text);
+                saveHistory();
+            }
+
+            sendButton.disabled = true;
+            var loadingEl = addLoadingIndicator();
+
+            var controller = new AbortController();
+            currentRequest = controller;
+            var timeoutId = setTimeout(function () { controller.abort(); }, 60000);
+
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text, senderId: senderId }),
+                signal: controller.signal
+            })
+                .then(function (response) {
+                    clearTimeout(timeoutId);
+                    return response.json().then(function (data) {
+                        return { status: response.status, data: data };
+                    }).catch(function () {
+                        return { status: response.status, data: {} };
+                    });
+                })
+                .then(function (result) {
+                    if (epoch !== requestEpoch) return; // cleared or superseded
+                    removeLoadingIndicator(loadingEl);
+                    if (result.status === 429) {
+                        addMessage('bot', result.data.error || 'Terlalu banyak pesan. Tunggu sekitar 1 menit lalu coba lagi ya.', null, { isError: true, persist: false, showRetry: true });
+                    } else if (result.data && result.data.reply) {
+                        addMessage('bot', result.data.reply);
+                        saveHistory();
+                    } else {
+                        addMessage('bot', result.data.error || 'Maaf, terjadi kesalahan. Coba lagi sebentar lagi.', null, { isError: true, persist: false, showRetry: true });
+                    }
+                })
+                .catch(function (err) {
+                    clearTimeout(timeoutId);
+                    if (epoch !== requestEpoch) return; // cleared or superseded
+                    removeLoadingIndicator(loadingEl);
+                    var msg = (err && err.name === 'AbortError')
+                        ? 'Permintaan kehabisan waktu. Coba lagi ya.'
+                        : 'Koneksi gagal. Periksa internet kamu lalu coba lagi.';
+                    addMessage('bot', msg, null, { isError: true, persist: false, showRetry: true });
+                })
+                .finally(function () {
+                    if (currentRequest === controller) currentRequest = null;
+                    sendButton.disabled = false;
+                    if (FINE_POINTER) chatInput.focus();
+                });
+        }
+
+        // Suggestion chips: tap to send
+        document.querySelectorAll('#chips .chip').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                if (sendButton.disabled) return;
+                sendChat(chip.dataset.text || chip.textContent);
+            });
+        });
+
+        chatForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var text = chatInput.value.trim();
+            if (!text || sendButton.disabled) return;
+            if (text.length > 2000) {
+                addMessage('bot', 'Pesan terlalu panjang. Maksimal 2000 karakter ya.', null, { isError: true, persist: false });
+                return;
+            }
+            chatInput.value = '';
+            sendChat(text);
+        });
+
+        /* ----- Init: restore history or welcome ----- */
+        var savedHistory = loadHistory();
+        if (savedHistory.length > 0) {
+            savedHistory.forEach(function (msg) { addMessage(msg.role, msg.text, msg.time, { silent: true }); });
+        } else {
+            addMessage('bot', WELCOME_TEXT);
+            saveHistory();
+        }
+
+        // Don't auto-open the keyboard on touch devices
+        if (FINE_POINTER) chatInput.focus();
+    </script>
+</body>
+</html>
