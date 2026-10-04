@@ -178,6 +178,13 @@ body::before {
 body.has-cursor #cursor-dot,
 body.has-cursor #cursor-ring {
     display: block;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+body.cursor-live #cursor-dot,
+body.cursor-live #cursor-ring {
+    opacity: 1;
 }
 
 #cursor-dot {
