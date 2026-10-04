@@ -6,10 +6,10 @@
     <title>DimasAjaa | Portfolio</title>
 
     <!-- SEO & Meta Tags -->
-    <meta name="description" content="Portfolio DimasAjaa - WhatsApp Bot Developer & Content Creator. Lihat proyek, chat dengan AI, dan temukan semua sosial media saya.">
+    <meta name="description" content="Portfolio DimasAjaa - WhatsApp Bot Developer & Content Creator. Chat dengan AI, gabung channel & grup WhatsApp, dan temukan semua sosial media dalam satu tempat.">
     <meta name="theme-color" content="#050510" id="meta-theme-color">
     <meta property="og:title" content="DimasAjaa | Portfolio">
-    <meta property="og:description" content="Portfolio WhatsApp Bot Developer & Content Creator. Proyek, AI Chat, dan sosial media dalam satu tempat.">
+    <meta property="og:description" content="Portfolio WhatsApp Bot Developer & Content Creator. Chat AI, channel & grup WhatsApp, dan sosial media dalam satu tempat.">
     <meta property="og:image" content="https://i.ibb.co.com/7xfZyYpS/IMG-20260310-094735-1.jpg">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary">
@@ -129,13 +129,13 @@
 
     <div id="content-wrapper">
         <div id="clock-container" class="reveal" style="--d:0s">
-            <div id="time">00:00:00</div>
-            <div id="date">Senin, 1 Januari 2024</div>
+            <div id="time" aria-hidden="true"></div>
+            <div id="date"></div>
         </div>
 
         <main id="container" class="reveal" style="--d:.12s">
             <div id="profile">
-                <img src="https://i.ibb.co.com/7xfZyYpS/IMG-20260310-094735-1.jpg" alt="Foto Profil DimasAjaa" loading="eager" data-fb="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233b82f6'/%3E%3Cstop offset='1' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='192' height='192' rx='96' fill='url(%23g)'/%3E%3Ctext x='96' y='124' font-family='Arial,sans-serif' font-size='76' font-weight='700' text-anchor='middle' fill='%23ffffff'%3EDA%3C/text%3E%3C/svg%3E" onerror="this.onerror=null;this.src=this.dataset.fb">
+                <img src="avatar.jpg" alt="Foto Profil DimasAjaa" loading="eager" data-fb="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233b82f6'/%3E%3Cstop offset='1' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='192' height='192' rx='96' fill='url(%23g)'/%3E%3Ctext x='96' y='124' font-family='Arial,sans-serif' font-size='76' font-weight='700' text-anchor='middle' fill='%23ffffff'%3EDA%3C/text%3E%3C/svg%3E" onerror="this.onerror=null;this.src=this.dataset.fb">
             </div>
 
             <h1 id="name">DimasAjaa</h1>
@@ -216,7 +216,8 @@
                 }
             });
             document.addEventListener('mouseout', function (e) {
-                if (e.target.closest && e.target.closest('a, button, input')) {
+                var link = e.target.closest ? e.target.closest('a, button, input') : null;
+                if (link && !(e.relatedTarget && link.contains(e.relatedTarget))) {
                     hovering = false;
                     targetScale = 1;
                 }
@@ -326,6 +327,15 @@
         }
 
         /* ===== Share (toast fallback, no alert) ===== */
+        function copyLink(data) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(data.text + '\n' + data.url)
+                    .then(function () { toast('Link disalin ke clipboard!'); })
+                    .catch(function () { toast('Gagal menyalin link.'); });
+            } else {
+                toast('Bagikan manual: ' + data.url);
+            }
+        }
         document.getElementById('share-button').addEventListener('click', function () {
             var data = {
                 title: document.title,
@@ -333,13 +343,12 @@
                 url: window.location.href
             };
             if (navigator.share) {
-                navigator.share(data).catch(function () { /* user cancelled */ });
-            } else if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(data.text + '\n' + data.url)
-                    .then(function () { toast('Link disalin ke clipboard!'); })
-                    .catch(function () { toast('Gagal menyalin link.'); });
+                navigator.share(data).catch(function (err) {
+                    // If share failed for a real reason (not user cancel), fall back to clipboard
+                    if (err && err.name !== 'AbortError') copyLink(data);
+                });
             } else {
-                toast('Bagikan manual: ' + data.url);
+                copyLink(data);
             }
         });
 

@@ -82,12 +82,11 @@
                 <svg class="icon"><use href="#i-arrow-left"></use></svg>
             </a>
             <div id="chat-avatar-wrap">
-                <img src="https://i.pinimg.com/736x/a6/bc/dd/a6bcddca2a67b35411717699861b6db1.jpg" alt="Rimuruassistant" id="chat-avatar" data-fb="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233b82f6'/%3E%3Cstop offset='1' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='96' rx='48' fill='url(%23g)'/%3E%3Ctext x='48' y='63' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='%23ffffff'%3ER%3C/text%3E%3C/svg%3E" onerror="this.onerror=null;this.src=this.dataset.fb">
-                <span id="online-dot" aria-hidden="true"></span>
+                <img src="rimuru-avatar.jpg" alt="Rimuruassistant" id="chat-avatar" data-fb="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233b82f6'/%3E%3Cstop offset='1' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='96' rx='48' fill='url(%23g)'/%3E%3Ctext x='48' y='63' font-family='Arial,sans-serif' font-size='44' font-weight='700' text-anchor='middle' fill='%23ffffff'%3ER%3C/text%3E%3C/svg%3E" onerror="this.onerror=null;this.src=this.dataset.fb">
             </div>
             <div id="chat-header-info">
                 <h1>Rimuruassistant</h1>
-                <p>AI Assistant <span class="header-separator">|</span> <span class="header-status">Online</span></p>
+                <p>AI Assistant <span class="header-separator">·</span> by DimasAjaa</p>
             </div>
             <button id="clear-button" class="header-btn" aria-label="Hapus riwayat chat" title="Hapus riwayat chat">
                 <svg class="icon"><use href="#i-trash"></use></svg>
@@ -95,12 +94,18 @@
         </div>
 
         <!-- Chat Messages Area -->
-        <div id="chat-messages" aria-live="polite"></div>
+        <div id="chat-messages"></div>
+        <div id="chat-live" class="sr-only" aria-live="polite"></div>
 
         <!-- Chat Input Area -->
         <div id="chat-input-area">
+            <div id="chips" role="group" aria-label="Saran pertanyaan">
+                <button type="button" class="chip" data-text="Ceritakan tentang Dimas">Tentang Dimas</button>
+                <button type="button" class="chip" data-text="Bagaimana cara gabung grup WhatsApp?">Grup WhatsApp</button>
+                <button type="button" class="chip" data-text="Apa saja sosial media Dimas?">Sosial media</button>
+            </div>
             <form id="chat-form">
-                <input type="text" id="chat-input" placeholder="Ketik pesan..." autocomplete="off" maxlength="2000" aria-label="Ketik pesan">
+                <input type="text" id="chat-input" placeholder="Ketik pesan..." autocomplete="off" aria-label="Ketik pesan">
                 <button type="submit" id="send-button" aria-label="Kirim pesan">
                     <svg class="icon"><use href="#i-send"></use></svg>
                 </button>
@@ -148,6 +153,7 @@
 
         /* ===== Chat logic ===== */
         var chatMessages = document.getElementById('chat-messages');
+        var chatLive = document.getElementById('chat-live');
         var chatForm = document.getElementById('chat-form');
         var chatInput = document.getElementById('chat-input');
         var sendButton = document.getElementById('send-button');
@@ -178,6 +184,19 @@
                     .replace(/'/g, '&#39;');
         }
 
+        function linkify(text) {
+            return text.replace(/https?:\/\/[^\s<>"']+/g, function (url) {
+                var clean = url;
+                var trail = '';
+                while (clean.length && /[.,;:!?)\]]/.test(clean.charAt(clean.length - 1))) {
+                    trail = clean.charAt(clean.length - 1) + trail;
+                    clean = clean.slice(0, -1);
+                }
+                if (!clean) return url;
+                return '<a href="' + clean + '" target="_blank" rel="noopener">' + clean + '</a>' + trail;
+            });
+        }
+
         function renderMarkdown(src) {
             var esc = escapeHTML(src);
             var parts = esc.split(/(`[^`]+`)/g);
@@ -185,9 +204,9 @@
                 if (i % 2 === 1) {
                     return '<code>' + part.slice(1, -1) + '</code>';
                 }
-                return part
+                return linkify(part
                     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\n/g, '<br>');
+                    .replace(/\n/g, '<br>'));
             }).join('');
         }
 
@@ -226,7 +245,7 @@
                     retryBtn.innerHTML = '<svg class="icon"><use href="#i-retry"></use></svg><span>Coba lagi</span>';
                     retryBtn.addEventListener('click', function () {
                         messageDiv.remove();
-                        if (lastUserText) sendChat(lastUserText);
+                        if (lastUserText) sendChat(lastUserText, { echoUser: false });
                     });
                     bubble.appendChild(retryBtn);
                 }
@@ -245,6 +264,9 @@
             messageDiv.appendChild(timeSpan);
             chatMessages.appendChild(messageDiv);
             scrollToBottom();
+            if (role === 'bot' && !opts.isError && !opts.silent && chatLive) {
+                chatLive.textContent = 'Rimuruassistant: ' + rawText;
+            }
         }
 
         function addLoadingIndicator() {
@@ -254,9 +276,14 @@
             messageDiv.id = 'typing-indicator';
             var bubble = document.createElement('div');
             bubble.className = 'message-bubble';
+            var sr = document.createElement('span');
+            sr.className = 'sr-only';
+            sr.textContent = 'Rimuruassistant sedang mengetik…';
+            bubble.appendChild(sr);
             for (var i = 0; i < 3; i++) {
                 var dot = document.createElement('span');
                 dot.className = 'typing-dot';
+                dot.setAttribute('aria-hidden', 'true');
                 bubble.appendChild(dot);
             }
             messageDiv.appendChild(bubble);
@@ -294,7 +321,15 @@
             } catch (e) { /* storage full/blocked: ignore */ }
         }
 
+        var currentRequest = null;
+        var requestEpoch = 0;
+
         function clearChat() {
+            requestEpoch++;
+            if (currentRequest) {
+                try { currentRequest.abort(); } catch (e) {}
+                currentRequest = null;
+            }
             chatMessages.innerHTML = '';
             try { localStorage.removeItem(CHAT_HISTORY_KEY); } catch (e) {}
             lastUserText = '';
@@ -306,15 +341,20 @@
         clearButton.addEventListener('click', clearChat);
 
         /* ----- Send flow ----- */
-        function sendChat(text) {
+        function sendChat(text, opts) {
+            opts = opts || {};
+            var epoch = ++requestEpoch;
             lastUserText = text;
-            addMessage('user', text);
-            saveHistory();
+            if (opts.echoUser !== false) {
+                addMessage('user', text);
+                saveHistory();
+            }
 
             sendButton.disabled = true;
             var loadingEl = addLoadingIndicator();
 
             var controller = new AbortController();
+            currentRequest = controller;
             var timeoutId = setTimeout(function () { controller.abort(); }, 60000);
 
             fetch('/api/chat', {
@@ -332,9 +372,10 @@
                     });
                 })
                 .then(function (result) {
+                    if (epoch !== requestEpoch) return; // cleared or superseded
                     removeLoadingIndicator(loadingEl);
                     if (result.status === 429) {
-                        addMessage('bot', result.data.error || 'Terlalu banyak pesan. Tunggu sekitar 1 menit lalu coba lagi ya.', null, { isError: true, persist: false });
+                        addMessage('bot', result.data.error || 'Terlalu banyak pesan. Tunggu sekitar 1 menit lalu coba lagi ya.', null, { isError: true, persist: false, showRetry: true });
                     } else if (result.data && result.data.reply) {
                         addMessage('bot', result.data.reply);
                         saveHistory();
@@ -344,6 +385,7 @@
                 })
                 .catch(function (err) {
                     clearTimeout(timeoutId);
+                    if (epoch !== requestEpoch) return; // cleared or superseded
                     removeLoadingIndicator(loadingEl);
                     var msg = (err && err.name === 'AbortError')
                         ? 'Permintaan kehabisan waktu. Coba lagi ya.'
@@ -351,10 +393,19 @@
                     addMessage('bot', msg, null, { isError: true, persist: false, showRetry: true });
                 })
                 .finally(function () {
+                    if (currentRequest === controller) currentRequest = null;
                     sendButton.disabled = false;
                     if (FINE_POINTER) chatInput.focus();
                 });
         }
+
+        // Suggestion chips: tap to send
+        document.querySelectorAll('#chips .chip').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                if (sendButton.disabled) return;
+                sendChat(chip.dataset.text || chip.textContent);
+            });
+        });
 
         chatForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -371,7 +422,7 @@
         /* ----- Init: restore history or welcome ----- */
         var savedHistory = loadHistory();
         if (savedHistory.length > 0) {
-            savedHistory.forEach(function (msg) { addMessage(msg.role, msg.text, msg.time); });
+            savedHistory.forEach(function (msg) { addMessage(msg.role, msg.text, msg.time, { silent: true }); });
         } else {
             addMessage('bot', WELCOME_TEXT);
             saveHistory();
