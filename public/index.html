@@ -7,228 +7,352 @@
 
     <!-- SEO & Meta Tags -->
     <meta name="description" content="Portfolio DimasAjaa - WhatsApp Bot Developer & Content Creator. Lihat proyek, chat dengan AI, dan temukan semua sosial media saya.">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#050510" id="meta-theme-color">
     <meta property="og:title" content="DimasAjaa | Portfolio">
     <meta property="og:description" content="Portfolio WhatsApp Bot Developer & Content Creator. Proyek, AI Chat, dan sosial media dalam satu tempat.">
     <meta property="og:image" content="https://i.ibb.co.com/7xfZyYpS/IMG-20260310-094735-1.jpg">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary">
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+    <!-- Theme init before paint (no FOUC), prefers-color-scheme default -->
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('theme');
+                var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+                var meta = document.getElementById('meta-theme-color');
+                if (meta) meta.setAttribute('content', theme === 'dark' ? '#050510' : '#eef2fd');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div id="cursor-dot"></div>
-    <div id="cursor-ring"></div>
+    <!-- Inline SVG sprite (no CDN needed) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <symbol id="i-share" viewBox="0 0 24 24">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </symbol>
+            <symbol id="i-sun" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </symbol>
+            <symbol id="i-moon" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </symbol>
+            <symbol id="i-msg-circle" viewBox="0 0 24 24">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </symbol>
+            <symbol id="i-users" viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </symbol>
+            <symbol id="i-cpu" viewBox="0 0 24 24">
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                <rect x="9" y="9" width="6" height="6"></rect>
+                <line x1="9" y1="1" x2="9" y2="4"></line>
+                <line x1="15" y1="1" x2="15" y2="4"></line>
+                <line x1="9" y1="20" x2="9" y2="23"></line>
+                <line x1="15" y1="20" x2="15" y2="23"></line>
+                <line x1="20" y1="9" x2="23" y2="9"></line>
+                <line x1="20" y1="14" x2="23" y2="14"></line>
+                <line x1="1" y1="9" x2="4" y2="9"></line>
+                <line x1="1" y1="14" x2="4" y2="14"></line>
+            </symbol>
+            <symbol id="i-msg-square" viewBox="0 0 24 24">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </symbol>
+            <symbol id="i-github" viewBox="0 0 24 24">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </symbol>
+            <symbol id="i-youtube" viewBox="0 0 24 24">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.92 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path>
+                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+            </symbol>
+            <symbol id="i-terminal" viewBox="0 0 24 24">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+            </symbol>
+            <symbol id="i-arrow-right" viewBox="0 0 24 24">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </symbol>
+        </defs>
+    </svg>
 
-    <!-- Floating Particles -->
-    <div id="particles"></div>
+    <!-- Aurora background -->
+    <div class="aurora" aria-hidden="true">
+        <span class="orb orb-a"></span>
+        <span class="orb orb-b"></span>
+        <span class="orb orb-c"></span>
+    </div>
 
-    <button id="share-button" aria-label="Bagikan halaman" onclick="sharePage()">
-        <i data-feather="share-2"></i>
+    <!-- Floating particles -->
+    <div id="particles" aria-hidden="true"></div>
+
+    <!-- Custom cursor (pointer:fine only) -->
+    <div id="cursor-dot" aria-hidden="true"></div>
+    <div id="cursor-ring" aria-hidden="true"></div>
+
+    <!-- Toast -->
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <button id="share-button" class="action-btn" aria-label="Bagikan halaman">
+        <svg class="icon"><use href="#i-share"></use></svg>
     </button>
 
-    <button id="theme-toggle" aria-label="Ganti tema" onclick="toggleTheme()">
-        <i data-feather="sun" class="feather-sun"></i>
-        <i data-feather="moon" class="feather-moon"></i>
+    <button id="theme-toggle" class="action-btn" aria-label="Ganti tema">
+        <svg class="icon icon-sun"><use href="#i-sun"></use></svg>
+        <svg class="icon icon-moon"><use href="#i-moon"></use></svg>
     </button>
 
     <div id="content-wrapper">
-        <div id="clock-container">
+        <div id="clock-container" class="reveal" style="--d:0s">
             <div id="time">00:00:00</div>
             <div id="date">Senin, 1 Januari 2024</div>
         </div>
 
-        <main id="container">
+        <main id="container" class="reveal" style="--d:.12s">
             <div id="profile">
-                <img src="https://i.ibb.co.com/7xfZyYpS/IMG-20260310-094735-1.jpg" alt="Foto Profil DimasAjaa">
+                <img src="https://i.ibb.co.com/7xfZyYpS/IMG-20260310-094735-1.jpg" alt="Foto Profil DimasAjaa" loading="eager">
             </div>
 
             <h1 id="name">DimasAjaa</h1>
             <p id="tagline"><span id="typing-text"></span><span id="typing-cursor">|</span></p>
 
-            <a class="link-container" href="https://whatsapp.com/channel/0029VaCvaNgBPzjcfrTixA1U" target="_blank">
-                <i class="link-logo" data-feather="message-circle"></i>
-                WhatsApp Channel
+            <a class="link-card reveal" style="--d:.28s" href="https://whatsapp.com/channel/0029VaCvaNgBPzjcfrTixA1U" target="_blank" rel="noopener">
+                <span class="link-icon"><svg class="icon"><use href="#i-msg-circle"></use></svg></span>
+                <span class="link-label">WhatsApp Channel</span>
+                <svg class="icon link-arrow"><use href="#i-arrow-right"></use></svg>
             </a>
 
-            <a class="link-container" href="https://chat.whatsapp.com/DXPU5F2cePXEaysvcImdUy" target="_blank">
-                <i class="link-logo" data-feather="users"></i>
-                Grup Bot WhatsApp
+            <a class="link-card reveal" style="--d:.38s" href="https://chat.whatsapp.com/DXPU5F2cePXEaysvcImdUy" target="_blank" rel="noopener">
+                <span class="link-icon"><svg class="icon"><use href="#i-users"></use></svg></span>
+                <span class="link-label">Grup Bot WhatsApp</span>
+                <svg class="icon link-arrow"><use href="#i-arrow-right"></use></svg>
             </a>
 
-            <a class="link-container" href="/chat">
-                <i class="link-logo" data-feather="cpu"></i>
-                Chat AI
+            <a class="link-card reveal" style="--d:.48s" href="/chat">
+                <span class="link-icon"><svg class="icon"><use href="#i-cpu"></use></svg></span>
+                <span class="link-label">Chat AI</span>
+                <svg class="icon link-arrow"><use href="#i-arrow-right"></use></svg>
             </a>
 
             <div id="social-grid">
-                <a class="social-item" href="https://wa.me/6282257529886" target="_blank" title="WhatsApp">
-                    <i data-feather="message-square"></i>
+                <a class="social-item reveal" style="--d:.58s" href="https://wa.me/6282257529886" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
+                    <svg class="icon"><use href="#i-msg-square"></use></svg>
                 </a>
-                <a class="social-item" href="https://github.com/dimasskuy" target="_blank" title="GitHub">
-                    <i data-feather="github"></i>
+                <a class="social-item reveal" style="--d:.66s" href="https://github.com/dimasskuy" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
+                    <svg class="icon"><use href="#i-github"></use></svg>
                 </a>
-                <a class="social-item" href="https://youtube.com/@felizmunzz?si=mvpddUdPc9TudwfP" target="_blank" title="YouTube">
-                    <i data-feather="youtube"></i>
+                <a class="social-item reveal" style="--d:.74s" href="https://youtube.com/@felizmunzz?si=mvpddUdPc9TudwfP" target="_blank" rel="noopener" title="YouTube" aria-label="YouTube">
+                    <svg class="icon"><use href="#i-youtube"></use></svg>
                 </a>
-                <a class="social-item" href="https://replit.com/@dimaszkuy" target="_blank" title="Replit">
-                    <i data-feather="terminal"></i>
+                <a class="social-item reveal" style="--d:.82s" href="https://replit.com/@dimaszkuy" target="_blank" rel="noopener" title="Replit" aria-label="Replit">
+                    <svg class="icon"><use href="#i-terminal"></use></svg>
                 </a>
             </div>
         </main>
 
-        <footer id="footer">
+        <footer id="footer" class="reveal" style="--d:.9s">
             <p>&copy; 2026 DimasAjaa. Semua hak dilindungi.</p>
         </footer>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script>
-        // Initialize Feather Icons
-        feather.replace();
+        'use strict';
 
-        // ===== Custom Cursor (throttled with rAF) =====
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorRing = document.getElementById('cursor-ring');
-        let mouseX = 0, mouseY = 0, rafPending = false;
+        var FINE_POINTER = window.matchMedia('(pointer: fine)').matches;
+        var REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            if (!rafPending) {
-                rafPending = true;
-                requestAnimationFrame(() => {
-                    cursorDot.style.left = mouseX + 'px';
-                    cursorDot.style.top = mouseY + 'px';
-                    cursorRing.style.left = mouseX + 'px';
-                    cursorRing.style.top = mouseY + 'px';
-                    rafPending = false;
-                });
+        /* ===== Custom cursor: dot follows instantly, ring lerps behind ===== */
+        (function initCursor() {
+            if (!FINE_POINTER || REDUCED_MOTION) return;
+            var dot = document.getElementById('cursor-dot');
+            var ring = document.getElementById('cursor-ring');
+            document.body.classList.add('has-cursor');
+
+            var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+            var rx = mx, ry = my;
+            var scale = 1, targetScale = 1;
+            var hovering = false;
+
+            document.addEventListener('mousemove', function (e) {
+                mx = e.clientX;
+                my = e.clientY;
+            });
+
+            document.addEventListener('mousedown', function () { targetScale = 0.75; });
+            document.addEventListener('mouseup', function () { targetScale = hovering ? 1.5 : 1; });
+
+            document.addEventListener('mouseover', function (e) {
+                if (e.target.closest && e.target.closest('a, button, input')) {
+                    hovering = true;
+                    targetScale = 1.5;
+                }
+            });
+            document.addEventListener('mouseout', function (e) {
+                if (e.target.closest && e.target.closest('a, button, input')) {
+                    hovering = false;
+                    targetScale = 1;
+                }
+            });
+
+            (function loop() {
+                rx += (mx - rx) * 0.16;
+                ry += (my - ry) * 0.16;
+                scale += (targetScale - scale) * 0.25;
+                dot.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0) translate(-50%,-50%)';
+                ring.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0) translate(-50%,-50%) scale(' + scale + ')';
+                requestAnimationFrame(loop);
+            })();
+        })();
+
+        /* ===== Floating particles (fewer, no shadows, transform-only) ===== */
+        (function initParticles() {
+            if (REDUCED_MOTION) return;
+            var isMobile = window.matchMedia('(max-width: 480px)').matches;
+            var count = isMobile ? 6 : 12;
+            var container = document.getElementById('particles');
+            var frag = document.createDocumentFragment();
+            for (var i = 0; i < count; i++) {
+                var p = document.createElement('span');
+                p.className = 'particle';
+                var size = (Math.random() * 3 + 2).toFixed(1);
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = (Math.random() * 100) + '%';
+                p.style.top = (20 + Math.random() * 80) + '%';
+                p.style.animationDuration = (Math.random() * 6 + 7).toFixed(1) + 's';
+                p.style.animationDelay = (-Math.random() * 8).toFixed(1) + 's';
+                frag.appendChild(p);
             }
-        });
+            container.appendChild(frag);
+        })();
 
-        document.addEventListener('mousedown', () => {
-            cursorRing.style.transform = 'translate(-50%, -50%) scale(0.8)';
-        });
-
-        document.addEventListener('mouseup', () => {
-            cursorRing.style.transform = 'translate(-50%, -50%) scale(1)';
-        });
-
-        // ===== Floating Particles (optimized) =====
-        const particlesContainer = document.getElementById('particles');
-        const isMobile = window.matchMedia('(max-width: 480px)').matches;
-        const particleCount = isMobile ? 0 : 15;
-        if (particleCount > 0) {
-            const fragment = document.createDocumentFragment();
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
-                particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
-                fragment.appendChild(particle);
-            }
-            particlesContainer.appendChild(fragment);
-        }
-
-        // ===== Clock Function =====
+        /* ===== Clock ===== */
         function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-
-            const timeEl = document.getElementById('time');
-            if (timeEl) timeEl.textContent = `${hours}:${minutes}:${seconds}`;
-
-            const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
-            const dayName = hari[now.getDay()];
-            const monthName = bulan[now.getMonth()];
-            const dateEl = document.getElementById('date');
-            if (dateEl) dateEl.textContent = `${dayName}, ${now.getDate()} ${monthName} ${now.getFullYear()}`;
+            var now = new Date();
+            var time = [now.getHours(), now.getMinutes(), now.getSeconds()]
+                .map(function (n) { return String(n).padStart(2, '0'); })
+                .join(':');
+            var hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            var bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            var timeEl = document.getElementById('time');
+            var dateEl = document.getElementById('date');
+            if (timeEl) timeEl.textContent = time;
+            if (dateEl) dateEl.textContent = hari[now.getDay()] + ', ' + now.getDate() + ' ' + bulan[now.getMonth()] + ' ' + now.getFullYear();
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ===== Typing Effect =====
-        const taglines = ['WhatsApp Bot Developer', 'Content Creator', 'Tech Enthusiast'];
-        let taglineIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        const typingText = document.getElementById('typing-text');
-
-        function typeEffect() {
-            const currentTagline = taglines[taglineIndex];
-
-            if (isDeleting) {
-                typingText.textContent = currentTagline.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typingText.textContent = currentTagline.substring(0, charIndex + 1);
-                charIndex++;
+        /* ===== Typing effect ===== */
+        (function initTyping() {
+            var taglines = ['WhatsApp Bot Developer', 'Content Creator', 'Tech Enthusiast'];
+            var el = document.getElementById('typing-text');
+            if (REDUCED_MOTION) {
+                el.textContent = taglines[0];
+                return;
             }
-
-            let typeSpeed = isDeleting ? 50 : 100;
-
-            if (!isDeleting && charIndex === currentTagline.length) {
-                typeSpeed = 2000; // jeda sebelum hapus
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                taglineIndex = (taglineIndex + 1) % taglines.length;
-                typeSpeed = 500; // jeda sebelum ketik berikutnya
+            var tagIndex = 0, charIndex = 0, deleting = false;
+            function tick() {
+                var current = taglines[tagIndex];
+                if (deleting) {
+                    charIndex--;
+                    el.textContent = current.substring(0, charIndex);
+                } else {
+                    charIndex++;
+                    el.textContent = current.substring(0, charIndex);
+                }
+                var speed = deleting ? 45 : 95;
+                if (!deleting && charIndex === current.length) {
+                    speed = 2000;
+                    deleting = true;
+                } else if (deleting && charIndex === 0) {
+                    deleting = false;
+                    tagIndex = (tagIndex + 1) % taglines.length;
+                    speed = 450;
+                }
+                setTimeout(tick, speed);
             }
+            tick();
+        })();
 
-            setTimeout(typeEffect, typeSpeed);
-        }
-        typeEffect();
-
-        // ===== Theme Toggle =====
-        function toggleTheme() {
-            const html = document.documentElement;
-            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+        /* ===== Theme toggle + theme-color sync ===== */
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            try { localStorage.setItem('theme', theme); } catch (e) {}
+            var meta = document.getElementById('meta-theme-color');
+            if (meta) meta.setAttribute('content', theme === 'dark' ? '#050510' : '#eef2fd');
         }
 
-        const storedTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', storedTheme);
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+            var current = document.documentElement.getAttribute('data-theme');
+            setTheme(current === 'dark' ? 'light' : 'dark');
+        });
 
-        // ===== Share Function =====
-        function sharePage() {
-            const shareData = {
+        /* ===== Toast ===== */
+        var toastTimer = null;
+        function toast(msg) {
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2600);
+        }
+
+        /* ===== Share (toast fallback, no alert) ===== */
+        document.getElementById('share-button').addEventListener('click', function () {
+            var data = {
                 title: document.title,
                 text: 'Kunjungi portfolio DimasAjaa - WhatsApp Bot Developer & Content Creator!',
-                url: window.location.href,
+                url: window.location.href
             };
-
             if (navigator.share) {
-                navigator.share(shareData).catch(console.error);
+                navigator.share(data).catch(function () { /* user cancelled */ });
+            } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(data.text + '\n' + data.url)
+                    .then(function () { toast('Link disalin ke clipboard!'); })
+                    .catch(function () { toast('Gagal menyalin link.'); });
             } else {
-                const shareMessage = `${shareData.text}\n${shareData.url}`;
-                navigator.clipboard.writeText(shareMessage)
-                    .then(() => alert('Link telah disalin ke clipboard!'))
-                    .catch(() => alert('Gagal menyalin link.'));
+                toast('Bagikan manual: ' + data.url);
             }
-        }
+        });
 
-        // ===== Ripple Effect on Links =====
-        document.querySelectorAll('.link-container').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                ripple.classList.add('ripple');
-                const rect = this.getBoundingClientRect();
-                ripple.style.left = (e.clientX - rect.left) + 'px';
-                ripple.style.top = (e.clientY - rect.top) + 'px';
-                this.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
+        /* ===== Ripple: real diameter from click position ===== */
+        document.querySelectorAll('.link-card').forEach(function (card) {
+            card.addEventListener('pointerdown', function (e) {
+                var rect = card.getBoundingClientRect();
+                var diameter = Math.max(rect.width, rect.height) * 2;
+                var ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                ripple.style.width = diameter + 'px';
+                ripple.style.height = diameter + 'px';
+                ripple.style.left = (e.clientX - rect.left - diameter / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - diameter / 2) + 'px';
+                card.appendChild(ripple);
+                setTimeout(function () { ripple.remove(); }, 650);
             });
         });
     </script>
