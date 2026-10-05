@@ -59,7 +59,7 @@ module.exports = async function handler(req, res) {
                     'Authorization': `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    model: 'deepseek-v4-flash-free',
+                    model: 'big-pickle',
                     messages: [
                         {
                             role: 'system',
@@ -87,7 +87,7 @@ TUGAS KAMU:
                             content: trimmed
                         }
                     ],
-                    max_tokens: 500
+                    max_tokens: 2000
                 }),
                 signal: controller.signal
             });
