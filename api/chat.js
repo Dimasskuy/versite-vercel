@@ -3,6 +3,8 @@ const RATE_LIMIT_WINDOW = 60 * 1000;
 const RATE_LIMIT_MAX = 10;
 const MAX_MESSAGE_LENGTH = 2000;
 const UPSTREAM_TIMEOUT_MS = 55000;
+// Model bisa diganti via env OPENROUTER_MODEL tanpa ubah kode
+const MODEL = process.env.OPENROUTER_MODEL || 'meta-llama/llama-3.3-70b-instruct:free';
 
 function isRateLimited(senderId) {
     const now = Date.now();
@@ -42,7 +44,7 @@ module.exports = async function handler(req, res) {
             return res.status(429).json({ error: 'Terlalu banyak pesan. Tunggu 1 menit lalu coba lagi.' });
         }
 
-        const apiKey = process.env.OPENCODE_API_KEY;
+        const apiKey = process.env.OPENROUTER_API_KEY;
         if (!apiKey) {
             return res.status(500).json({ error: 'Layanan AI belum dikonfigurasi. Coba lagi nanti.' });
         }
@@ -52,14 +54,16 @@ module.exports = async function handler(req, res) {
 
         let response;
         try {
-            response = await fetch('https://opencode.ai/zen/v1/chat/completions', {
+            response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
+                    'Authorization': `Bearer ${apiKey}`,
+                    'HTTP-Referer': 'https://versite-vercel.vercel.app/',
+                    'X-Title': 'DimasAjaa Chat'
                 },
                 body: JSON.stringify({
-                    model: 'big-pickle',
+                    model: MODEL,
                     messages: [
                         {
                             role: 'system',
