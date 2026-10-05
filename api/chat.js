@@ -99,6 +99,12 @@ TUGAS KAMU:
             if (response.status === 429) {
                 return res.status(429).json({ error: 'Layanan AI sedang sibuk. Tunggu sebentar lalu coba lagi.' });
             }
+            if (response.status === 401 || response.status === 403) {
+                return res.status(500).json({ error: 'API key tidak valid atau tidak punya akses ke model ini. (upstream ' + response.status + ')' });
+            }
+            if (response.status === 404) {
+                return res.status(500).json({ error: 'Model AI tidak ditemukan. (upstream 404)' });
+            }
             throw new Error(`API error: ${response.status}`);
         }
 
