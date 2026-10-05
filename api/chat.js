@@ -4,7 +4,7 @@ const RATE_LIMIT_MAX = 10;
 const MAX_MESSAGE_LENGTH = 2000;
 const UPSTREAM_TIMEOUT_MS = 55000;
 // Model bisa diganti via env OPENROUTER_MODEL tanpa ubah kode
-const MODEL = process.env.OPENROUTER_MODEL || 'meta-llama/llama-3.3-70b-instruct:free';
+const MODEL = process.env.OPENROUTER_MODEL || 'openrouter/free';
 
 function isRateLimited(senderId) {
     const now = Date.now();
